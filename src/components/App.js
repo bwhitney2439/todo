@@ -4,7 +4,7 @@ import TodoList from "./todoList";
 
 class App extends Component {
   state = {
-    todoItems: ["hello world", "hi there"]
+    todoItems: []
   };
 
   renderTodos() {
@@ -12,14 +12,31 @@ class App extends Component {
       return null;
     }
 
-    return <TodoList todoItems={this.state.todoItems} />;
+    return (
+      <TodoList
+        onTodoDelete={this.onTodoDelete}
+        todoItems={this.state.todoItems}
+      />
+    );
   }
+
+  onFormSubmit = todoItem => {
+    const todoItems = [...this.state.todoItems, todoItem];
+    this.setState({ todoItems });
+  };
+
+  onTodoDelete = todoItem => {
+    const todoItems = [...this.state.todoItems];
+    const result = todoItems.filter(Item => Item !== todoItem);
+
+    this.setState({ todoItems: result });
+  };
 
   render() {
     return (
       <div className="ui container center aligned">
         <h1 className="ui header">todos</h1>
-        <SearchBar />
+        <SearchBar onFormSubmit={this.onFormSubmit} />
         {this.renderTodos()}
       </div>
     );

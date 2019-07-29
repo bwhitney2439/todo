@@ -1,10 +1,11 @@
 import React from "react";
 
-const TodoItem = props => {
+const TodoItem = ({ todoItem, onTodoDelete }) => {
   return (
     <div className="item">
       <div className="ui massive icon input">
-        <input />
+        <input tyape="text" placeholder={todoItem} />
+        <i className="close icon" />
       </div>
     </div>
   );
