@@ -1,13 +1,15 @@
 import React from "react";
 
-const TodoItem = ({ todoItem, onTodoDelete }) => {
+const TodoItem = props => {
   return (
-    <div className="item">
-      <div className="ui massive icon input">
-        <input tyape="text" placeholder={todoItem} />
-        <i className="close icon" />
+    <form className="ui form">
+      <div className="item">
+        <div className="field ui massive icon input">
+          <input tyape="text" value={props.todoItem} />
+          <i className="close icon" />
+        </div>
       </div>
-    </div>
+    </form>
   );
 };
 
