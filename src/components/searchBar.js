@@ -1,28 +1,32 @@
 import React from "react";
 
 class SearchBar extends React.Component {
-  state = { term: "" };
+  state = { content: "" };
 
-  onFormSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
 
-    this.props.onFormSubmit(this.state.term);
+    if (this.state.content === "") {
+      return null;
+    }
 
-    this.setState({ term: "" });
+    this.props.addTodoItem(this.state);
+
+    this.setState({ content: "" });
   };
 
   handleChange = event => {
-    this.setState({ term: event.target.value });
+    this.setState({ content: event.target.value });
   };
 
   render() {
     return (
-      <form className="ui form" onSubmit={this.onFormSubmit}>
-        <div className="field ui massive icon input">
+      <form className="ui form" onSubmit={this.handleSubmit}>
+        <div className="ui massive icon input">
           <input
             type="text"
             placeholder="what needs to be done?"
-            value={this.state.term}
+            value={this.state.content}
             onChange={this.handleChange}
           />
           <i className="search icon" />

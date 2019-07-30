@@ -1,15 +1,19 @@
 import React from "react";
 
-const TodoItem = props => {
+const TodoItem = ({ deleteTodoItem, todoItem }) => {
   return (
-    <form className="ui form">
-      <div className="item">
-        <div className="field ui massive icon input">
-          <input tyape="text" value={props.todoItem} />
-          <i className="close icon" />
-        </div>
+    <div className="item">
+      <div className="ui massive icon input">
+        <input type="text" value={todoItem.content} readOnly={true} />
+
+        <i
+          className="close link icon"
+          onClick={() => {
+            deleteTodoItem(todoItem.id);
+          }}
+        />
       </div>
-    </form>
+    </div>
   );
 };
 
