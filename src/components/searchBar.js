@@ -1,18 +1,18 @@
 import React from "react";
 
+const ENTER_KEY = 13;
+
 class SearchBar extends React.Component {
   state = { content: "" };
 
-  handleSubmit = event => {
-    event.preventDefault();
+  handleNewTodoKeyDown = event => {
+    if (event.keyCode === ENTER_KEY && this.state.content !== "") {
+      event.preventDefault();
 
-    if (this.state.content === "") {
-      return null;
+      this.props.addTodoItem(this.state);
+
+      this.setState({ content: "" });
     }
-
-    this.props.addTodoItem(this.state);
-
-    this.setState({ content: "" });
   };
 
   handleChange = event => {
@@ -21,17 +21,17 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <form className="ui form" onSubmit={this.handleSubmit}>
-        <div className="ui massive icon input">
-          <input
-            type="text"
-            placeholder="what needs to be done?"
-            value={this.state.content}
-            onChange={this.handleChange}
-          />
-          <i className="search icon" />
-        </div>
-      </form>
+      <div className="ui massive icon input">
+        <input
+          type="text"
+          placeholder="what needs to be done?"
+          value={this.state.content}
+          onChange={this.handleChange}
+          onKeyDown={this.handleNewTodoKeyDown}
+          autoFocus={true}
+        />
+        <i className="search icon" />
+      </div>
     );
   }
 }

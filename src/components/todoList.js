@@ -12,7 +12,11 @@ const TodoList = ({ todoItems, deleteTodoItem }) => {
     );
   });
 
-  return <div>{renderedTodos}</div>;
+  return (
+    <section className="main">
+      <div>{renderedTodos}</div>
+    </section>
+  );
 };
 
 export default TodoList;

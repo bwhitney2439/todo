@@ -4,7 +4,10 @@ import TodoList from "./todoList";
 
 class App extends Component {
   state = {
-    todoItems: []
+    todoItems: [
+      { id: 1, content: "make tea" },
+      { id: 2, content: "eat chocolate" }
+    ]
   };
 
   addTodoItem = todoItem => {
@@ -14,10 +17,9 @@ class App extends Component {
   };
 
   deleteTodoItem = todoItem => {
-    const todoItems = [...this.state.todoItems];
-    const result = todoItems.filter(Item => Item.id !== todoItem);
+    const todoItems = this.state.todoItems.filter(item => item.id !== todoItem);
 
-    this.setState({ todoItems: result });
+    this.setState({ todoItems });
   };
 
   render() {
