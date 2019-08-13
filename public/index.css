@@ -1,0 +1,49 @@
+.container {
+  width: 550px;
+  max-width: 100%;
+  text-align: center;
+  margin: auto;
+}
+
+.container form {
+  margin: 0;
+}
+
+.input-container {
+  padding: 10px;
+  display: flex;
+  border: 1px solid lightgrey;
+  margin: 0;
+  align-items: center;
+}
+.input-container input {
+  border: none;
+  width: 100%;
+  /* height: 100%; */
+  outline: none;
+  font-size: 24px;
+  margin-left: 10px;
+  /* padding: 10px; */
+}
+.input-container i {
+  padding: 10px;
+  /* font-size: 20px; */
+  opacity: 0.5;
+  min-width: 5%;
+}
+
+.input-container .destroy {
+  display: none;
+  /* position: absolute; */
+  color: #cc9a9a;
+  /* margin-bottom: 11px; */
+  transition: color 0.2s ease-out;
+}
+
+.input-container .destroy:hover {
+  color: #af5b5e;
+}
+
+.input-container:hover .destroy {
+  display: block;
+}
