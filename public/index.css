@@ -33,7 +33,7 @@
 }
 
 .input-container .destroy {
-  display: none;
+  opacity: 0;
   /* position: absolute; */
   color: #cc9a9a;
   /* margin-bottom: 11px; */
@@ -45,5 +45,17 @@
 }
 
 .input-container:hover .destroy {
-  display: block;
+  opacity: 1;
+}
+
+.input-completed {
+  text-decoration: line-through;
+}
+
+.input-container .searchIconToggle {
+  opacity: 1;
+}
+
+.input-container .searchIconInvis {
+  opacity: 0;
 }

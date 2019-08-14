@@ -4,7 +4,9 @@ const TodoItem = ({ deleteTodoItem, todoItem, toggleComplete }) => {
   const iconClassName = `far ${
     todoItem.completed ? "fa-check-circle" : "fa-circle"
   } fa-w-14 fa-2x`;
+
   const inputClassName = todoItem.completed ? "input-completed" : "";
+
   return (
     <div className="input-container">
       <i onClick={() => toggleComplete(todoItem)} className={iconClassName} />

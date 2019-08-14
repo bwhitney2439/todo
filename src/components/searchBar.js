@@ -3,7 +3,7 @@ import React from "react";
 const ENTER_KEY = 13;
 
 class SearchBar extends React.Component {
-  state = { content: "", toggleAll: false };
+  state = { content: "" };
 
   handleNewTodoKeyDown = event => {
     if (event.keyCode === ENTER_KEY && this.state.content !== "") {
@@ -20,18 +20,30 @@ class SearchBar extends React.Component {
   };
 
   handleToggleAll = () => {
-    this.props.toggleAllComplete(this.state.toggleAll);
-
-    this.setState({ toggleAll: !this.state.toggleAll });
+    this.props.toggleAllComplete();
   };
+
+  renderSearchIcon() {
+    const { length: count } = this.props.todoItems;
+    if (count === 0) {
+      return (
+        <i className="fas fa-chevron-down fa-w-14 fa-2x searchIconInvis" />
+      );
+    } else {
+      const searchIconClassName = this.props.toggleAll
+        ? "fas fa-chevron-down fa-w-14 fa-2x searchIconToggle"
+        : "fas fa-chevron-down fa-w-14 fa-2x";
+
+      return (
+        <i className={searchIconClassName} onClick={this.handleToggleAll} />
+      );
+    }
+  }
 
   render() {
     return (
       <div className="input-container">
-        <i
-          className="fas fa-chevron-down fa-w-14 fa-2x"
-          onClick={this.handleToggleAll}
-        />
+        {this.renderSearchIcon()}
         <input
           type="text"
           placeholder="what needs to be done?"
