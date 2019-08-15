@@ -49,6 +49,8 @@ class App extends Component {
   toggleAllComplete = () => {
     const todoItems = [...this.state.todoItems];
 
+    todoItems.map(todo => {});
+
     if (toggleAll) {
       todoItems.map(todoItem => {
         todoItem.completed = true;
