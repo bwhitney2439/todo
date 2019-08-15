@@ -4,10 +4,11 @@ import TodoItem from "./todoItem";
 class App extends Component {
   state = {
     todoItems: [
-      { id: 1, content: "make tea", completed: false },
-      { id: 2, content: "eat chocolate", completed: false }
+      { id: 1, content: "make tea", completed: false, edit: false },
+      { id: 2, content: "eat chocolate", completed: false, edit: false }
     ],
-    toggleAll: false
+    toggleAll: false,
+    activeTodoCount: 0
   };
 
   addTodoItem = todoItem => {
@@ -31,12 +32,15 @@ class App extends Component {
   toggleComplete = todoItem => {
     const todoItems = [...this.state.todoItems];
     const index = todoItems.indexOf(todoItem);
-    todoItems[index] = { ...todoItems[index] };
+    // todoItems[index] = { ...todoItems[index] };
     todoItems[index].completed = !todoItems[index].completed;
 
     const toggleAll = this.state.toggleAll;
-    if (toggleAll || ![this.state.todoItems].every(x => x.completed === true)) {
-      this.setState({ todoItems, toggleAll: false });
+    if (toggleAll) {
+      this.setState({
+        todoItems,
+        toggleAll: false
+      });
     } else {
       this.setState({ todoItems });
     }
@@ -44,7 +48,6 @@ class App extends Component {
 
   toggleAllComplete = () => {
     const todoItems = [...this.state.todoItems];
-    const toggleAll = !this.state.toggleAll;
 
     if (toggleAll) {
       todoItems.map(todoItem => {
@@ -60,6 +63,16 @@ class App extends Component {
     this.setState({ todoItems, toggleAll });
   };
 
+  toggleEdit = todoItem => {
+    const todoItems = [...this.state.todoItems];
+    const index = todoItems.indexOf(todoItem);
+    todoItems[index].edit = !todoItems[index].edit;
+
+    this.setState({ todoItems });
+
+    console.log(this.state.todoItems);
+  };
+
   renderTodoList() {
     const renderedTodos = this.state.todoItems.map(todoItem => {
       return (
@@ -69,6 +82,7 @@ class App extends Component {
           deleteTodoItem={this.deleteTodoItem}
           toggleComplete={this.toggleComplete}
           toggleAll={this.state.toggleAll}
+          toggleEdit={this.toggleEdit}
         />
       );
     });
@@ -77,17 +91,21 @@ class App extends Component {
   }
 
   render() {
+    const activeTodoCount = this.state.todoItems.reduce((accum, todo) => {
+      return todo.completed ? accum : accum + 1;
+    }, 0);
+
     return (
       <div className="container">
         <header>
           <h1>todo</h1>
         </header>
-
         <SearchBar
           addTodoItem={this.addTodoItem}
           toggleAllComplete={this.toggleAllComplete}
           todoItems={this.state.todoItems}
           toggleAll={this.state.toggleAll}
+          activeTodoCount={activeTodoCount}
         />
         {this.renderTodoList()}
       </div>
