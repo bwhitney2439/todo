@@ -1,19 +1,35 @@
 import React from "react";
 
+const ENTER_KEY = 13;
+const ESCAPE_KEY = 27;
+
 class TodoItem extends React.Component {
   state = { content: "" };
 
-  renderInput = () => {
-    const { todoItem, toggleEdit } = this.props;
+  componentDidMount() {
+    this.setState({ content: this.props.todoItem.content });
+  }
 
-    if (todoItem.edit) {
+  handleEditTodoKeyDown = event => {
+    if (event.keyCode === ENTER_KEY) {
+      this.props.editTodoItem(this.state.content, this.props.todoItem);
+    } else if (event.keyCode === ESCAPE_KEY) {
+      this.props.cancelEdit();
+    }
+  };
+
+  renderInput = () => {
+    const { todoItem, toggleEdit, editing } = this.props;
+
+    if (editing) {
       return (
         <input
-          className={todoItem.completed ? "input-completed" : ""}
+          className={todoItem.completed ? "input-completed input-edit" : ""}
           type="text"
           value={this.state.content}
-          onDoubleClick={() => toggleEdit(todoItem)}
+          // onDoubleClick={() => toggleEdit(todoItem)}
           onChange={this.handleChange}
+          onKeyDown={this.handleEditTodoKeyDown}
         />
       );
     } else {
@@ -24,17 +40,21 @@ class TodoItem extends React.Component {
           value={todoItem.content}
           readOnly
           onDoubleClick={() => toggleEdit(todoItem)}
+          onKeyDown={this.handleEditTodoKeyDown}
         />
       );
     }
   };
 
-  handleChange = event => {};
+  handleChange = event => {
+    this.setState({ content: event.target.value });
+  };
 
   render() {
-    const { todoItem, toggleComplete, deleteTodoItem } = this.props;
+    const { todoItem, toggleComplete, deleteTodoItem, editing } = this.props;
+
     return (
-      <div className="input-container">
+      <div className={`input-container ${editing ? "edit" : ""}`}>
         <i
           onClick={() => toggleComplete(todoItem)}
           className={`far ${

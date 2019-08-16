@@ -4,12 +4,21 @@ import TodoItem from "./todoItem";
 class App extends Component {
   state = {
     todoItems: [
-      { id: 1, content: "make tea", completed: false, edit: false },
-      { id: 2, content: "eat chocolate", completed: false, edit: false }
+      { id: 1, content: "make tea", completed: false },
+      { id: 2, content: "eat chocolate", completed: false }
     ],
+    editing: false,
     toggleAll: false,
-    activeTodoCount: 0
+    activeTodoCount: null
   };
+
+  componentDidMount() {
+    const activeTodoCount = this.state.todoItems.reduce((accum, todo) => {
+      return todo.completed ? accum : accum + 1;
+    }, 0);
+
+    this.setState({ activeTodoCount });
+  }
 
   addTodoItem = todoItem => {
     todoItem.id = Math.random();
@@ -32,47 +41,49 @@ class App extends Component {
   toggleComplete = todoItem => {
     const todoItems = [...this.state.todoItems];
     const index = todoItems.indexOf(todoItem);
-    // todoItems[index] = { ...todoItems[index] };
     todoItems[index].completed = !todoItems[index].completed;
 
-    const toggleAll = this.state.toggleAll;
-    if (toggleAll) {
-      this.setState({
-        todoItems,
-        toggleAll: false
-      });
-    } else {
-      this.setState({ todoItems });
+    const activeTodoCount = todoItems.reduce((accum, todo) => {
+      return todo.completed ? accum : accum + 1;
+    }, 0);
+
+    this.setState({ todoItems, activeTodoCount });
+
+    if (todoItems[index].completed === false) {
+      this.setState({ toggleAll: false });
+    } else if (activeTodoCount === 0) {
+      this.setState({ toggleAll: true });
     }
   };
 
   toggleAllComplete = () => {
-    const todoItems = [...this.state.todoItems];
+    const toggleAll = !this.state.toggleAll;
+    const todoItems = this.state.todoItems.map(todo => {
+      if (toggleAll !== todo.completed) {
+        todo.completed = !todo.completed;
+        return todo;
+      } else {
+        return todo;
+      }
+    });
 
-    todoItems.map(todo => {});
-
-    if (toggleAll) {
-      todoItems.map(todoItem => {
-        todoItem.completed = true;
-        return todoItem;
-      });
-    } else {
-      todoItems.map(todoItem => {
-        todoItem.completed = false;
-        return todoItem;
-      });
-    }
     this.setState({ todoItems, toggleAll });
   };
 
   toggleEdit = todoItem => {
+    this.setState({ editing: todoItem.id });
+  };
+
+  cancelEdit = () => {
+    this.setState({ editing: null });
+  };
+
+  editTodoItem = (content, todoItem) => {
     const todoItems = [...this.state.todoItems];
     const index = todoItems.indexOf(todoItem);
-    todoItems[index].edit = !todoItems[index].edit;
+    todoItems[index].content = content;
 
-    this.setState({ todoItems });
-
-    console.log(this.state.todoItems);
+    this.setState({ todoItems, editing: null });
   };
 
   renderTodoList() {
@@ -85,6 +96,9 @@ class App extends Component {
           toggleComplete={this.toggleComplete}
           toggleAll={this.state.toggleAll}
           toggleEdit={this.toggleEdit}
+          editTodoItem={this.editTodoItem}
+          cancelEdit={this.cancelEdit}
+          editing={this.state.editing === todoItem.id}
         />
       );
     });
@@ -93,10 +107,7 @@ class App extends Component {
   }
 
   render() {
-    const activeTodoCount = this.state.todoItems.reduce((accum, todo) => {
-      return todo.completed ? accum : accum + 1;
-    }, 0);
-
+    console.log(this.state.toggleAll);
     return (
       <div className="container">
         <header>
@@ -107,7 +118,7 @@ class App extends Component {
           toggleAllComplete={this.toggleAllComplete}
           todoItems={this.state.todoItems}
           toggleAll={this.state.toggleAll}
-          activeTodoCount={activeTodoCount}
+          activeTodoCount={this.state.activeTodoCount}
         />
         {this.renderTodoList()}
       </div>
