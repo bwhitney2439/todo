@@ -4,9 +4,10 @@ const ENTER_KEY = 13;
 const ESCAPE_KEY = 27;
 
 class TodoItem extends React.Component {
-  state = { content: "" };
+  state = { value: "", content: "" };
 
   componentDidMount() {
+    console.log("componentdidmount");
     this.setState({ content: this.props.todoItem.content });
   }
 
@@ -14,12 +15,30 @@ class TodoItem extends React.Component {
     if (event.keyCode === ENTER_KEY) {
       this.props.editTodoItem(this.state.content, this.props.todoItem);
     } else if (event.keyCode === ESCAPE_KEY) {
+      this.setState({ content: this.props.todoItem.content });
       this.props.cancelEdit();
     }
   };
 
+  handleEditTodoUnfocus = () => {
+    this.setState({ content: this.props.todoItem.content });
+    this.props.cancelEdit();
+  };
+
+  handleEditToDo = todoItem => {
+    this.props.toggleEdit(todoItem);
+  };
+
+  // handleEditTodoFocus = event => {
+  //   // event.target.selectionStart = event.target.selectionEnd =
+  //   //   event.target.value.length;
+  //   let range = event.target.createTextRange();
+  //   range.collapse(false);
+  //   range.select();
+  // };
+
   renderInput = () => {
-    const { todoItem, toggleEdit, editing } = this.props;
+    const { todoItem, editing } = this.props;
 
     if (editing) {
       return (
@@ -27,21 +46,30 @@ class TodoItem extends React.Component {
           className={todoItem.completed ? "input-completed input-edit" : ""}
           type="text"
           value={this.state.content}
-          // onDoubleClick={() => toggleEdit(todoItem)}
+          onBlur={this.handleEditTodoUnfocus}
           onChange={this.handleChange}
           onKeyDown={this.handleEditTodoKeyDown}
+          onFocus={this.handleEditTodofocus}
+          autoFocus
         />
       );
     } else {
       return (
-        <input
+        <label
           className={todoItem.completed ? "input-completed" : ""}
-          type="text"
-          value={todoItem.content}
-          readOnly
-          onDoubleClick={() => toggleEdit(todoItem)}
-          onKeyDown={this.handleEditTodoKeyDown}
-        />
+          onDoubleClick={() => this.handleEditToDo(todoItem)}
+        >
+          {todoItem.content}
+        </label>
+        // <input
+        //   className={todoItem.completed ? "input-completed" : ""}
+        //   type="text"
+        //   value={todoItem.content}
+        //   readOnly
+        //   onDoubleClick={() => this.handleEditToDo(todoItem)}
+        //   // onKeyDown={this.handleEditTodoKeyDown}
+        //   // onFocus={this.handleEditTodofocus}
+        // />
       );
     }
   };

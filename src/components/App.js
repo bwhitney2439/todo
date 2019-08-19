@@ -75,6 +75,7 @@ class App extends Component {
   };
 
   cancelEdit = () => {
+    console.log("cancelEdit");
     this.setState({ editing: null });
   };
 
