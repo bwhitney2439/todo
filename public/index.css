@@ -29,6 +29,7 @@
 
 .input-container label {
   width: 100%;
+  word-break: break-all;
   font-size: 24px;
   margin-left: 10px;
   text-align: left;
