@@ -7,7 +7,6 @@ class TodoItem extends React.Component {
   state = { value: "", content: "" };
 
   componentDidMount() {
-    console.log("componentdidmount");
     this.setState({ content: this.props.todoItem.content });
   }
 
@@ -28,14 +27,6 @@ class TodoItem extends React.Component {
   handleEditToDo = todoItem => {
     this.props.toggleEdit(todoItem);
   };
-
-  // handleEditTodoFocus = event => {
-  //   // event.target.selectionStart = event.target.selectionEnd =
-  //   //   event.target.value.length;
-  //   let range = event.target.createTextRange();
-  //   range.collapse(false);
-  //   range.select();
-  // };
 
   renderInput = () => {
     const { todoItem, editing } = this.props;
@@ -61,15 +52,6 @@ class TodoItem extends React.Component {
         >
           {todoItem.content}
         </label>
-        // <input
-        //   className={todoItem.completed ? "input-completed" : ""}
-        //   type="text"
-        //   value={todoItem.content}
-        //   readOnly
-        //   onDoubleClick={() => this.handleEditToDo(todoItem)}
-        //   // onKeyDown={this.handleEditTodoKeyDown}
-        //   // onFocus={this.handleEditTodofocus}
-        // />
       );
     }
   };

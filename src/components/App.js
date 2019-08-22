@@ -3,22 +3,11 @@ import SearchBar from "./searchBar";
 import TodoItem from "./todoItem";
 class App extends Component {
   state = {
-    todoItems: [
-      { id: 1, content: "make tea", completed: false },
-      { id: 2, content: "eat chocolate", completed: false }
-    ],
+    todoItems: [],
     editing: false,
     toggleAll: false,
-    activeTodoCount: null
+    activeFilter: "All"
   };
-
-  componentDidMount() {
-    const activeTodoCount = this.state.todoItems.reduce((accum, todo) => {
-      return todo.completed ? accum : accum + 1;
-    }, 0);
-
-    this.setState({ activeTodoCount });
-  }
 
   addTodoItem = todoItem => {
     todoItem.id = Math.random();
@@ -47,13 +36,11 @@ class App extends Component {
       return todo.completed ? accum : accum + 1;
     }, 0);
 
-    this.setState({ todoItems, activeTodoCount });
-
-    if (todoItems[index].completed === false) {
-      this.setState({ toggleAll: false });
-    } else if (activeTodoCount === 0) {
-      this.setState({ toggleAll: true });
-    }
+    if (activeTodoCount === 0) {
+      this.setState({ toggleAll: true, todoItems });
+    } else if (todoItems[index].completed === false) {
+      this.setState({ toggleAll: false, todoItems });
+    } else this.setState({ todoItems });
   };
 
   toggleAllComplete = () => {
@@ -75,8 +62,12 @@ class App extends Component {
   };
 
   cancelEdit = () => {
-    console.log("cancelEdit");
     this.setState({ editing: null });
+  };
+
+  clearTodoItems = () => {
+    const todoItems = this.state.todoItems.filter(todo => !todo.completed);
+    this.setState({ todoItems });
   };
 
   editTodoItem = (content, todoItem) => {
@@ -87,8 +78,22 @@ class App extends Component {
     this.setState({ todoItems, editing: null });
   };
 
+  filterTodoItems = filter => {
+    this.setState({ activeFilter: filter });
+  };
+
   renderTodoList() {
-    const renderedTodos = this.state.todoItems.map(todoItem => {
+    const filteredTodos = this.state.todoItems.filter(todo => {
+      switch (this.state.activeFilter) {
+        case "Active":
+          return !todo.completed;
+        case "Completed":
+          return todo.completed;
+        default:
+          return true;
+      }
+    });
+    const renderedTodos = filteredTodos.map(todoItem => {
       return (
         <TodoItem
           key={todoItem.id}
@@ -104,11 +109,59 @@ class App extends Component {
       );
     });
 
-    return renderedTodos;
+    return { todos: renderedTodos, filteredTodosCount: renderedTodos.length };
+  }
+
+  renderFooter(filteredTodosCount, activeTodoCount) {
+    const { activeFilter } = this.state;
+    const { length: totalTodosCount } = this.state.todoItems;
+
+    const completedTodoCount = totalTodosCount - activeTodoCount;
+
+    if (!totalTodosCount) {
+      return null;
+    } else {
+      return (
+        <div className="filter">
+          <label>{filteredTodosCount} items</label>
+          <div className="filter-button-container">
+            <button
+              className={activeFilter === "All" ? "selected" : ""}
+              onClick={() => this.filterTodoItems("All")}
+            >
+              All
+            </button>
+            <button
+              className={activeFilter === "Active" ? "selected" : ""}
+              onClick={() => this.filterTodoItems("Active")}
+            >
+              Active
+            </button>
+            <button
+              className={activeFilter === "Completed" ? "selected" : ""}
+              onClick={() => this.filterTodoItems("Completed")}
+            >
+              Completed
+            </button>
+          </div>
+          <label
+            className={completedTodoCount ? "" : "hide-clear-completed"}
+            onClick={this.clearTodoItems}
+          >
+            Clear Completed
+          </label>
+        </div>
+      );
+    }
   }
 
   render() {
-    console.log(this.state.toggleAll);
+    const activeTodoCount = this.state.todoItems.reduce((accum, todo) => {
+      return todo.completed ? accum : accum + 1;
+    }, 0);
+
+    const { todos, filteredTodosCount } = this.renderTodoList();
+
     return (
       <div className="container">
         <header>
@@ -119,9 +172,10 @@ class App extends Component {
           toggleAllComplete={this.toggleAllComplete}
           todoItems={this.state.todoItems}
           toggleAll={this.state.toggleAll}
-          activeTodoCount={this.state.activeTodoCount}
+          activeTodoCount={activeTodoCount}
         />
-        {this.renderTodoList()}
+        {todos}
+        {this.renderFooter(filteredTodosCount, activeTodoCount)}
       </div>
     );
   }

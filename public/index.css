@@ -3,10 +3,7 @@
   max-width: 100%;
   text-align: center;
   margin: auto;
-}
-
-.container form {
-  margin: 0;
+  font-family: "Lucida Sans Unicode";
 }
 
 .input-container {
@@ -16,23 +13,16 @@
   margin: 0;
   align-items: center;
 }
-.input-container input {
+.input-container input,
+.input-container label {
   border: none;
   width: 100%;
-  /* height: 100%; */
   outline: none;
   font-size: 24px;
   margin-left: 10px;
-
-  /* padding: 10px; */
-}
-
-.input-container label {
-  width: 100%;
-  word-break: break-all;
-  font-size: 24px;
-  margin-left: 10px;
+  font-family: "Lucida Sans Unicode";
   text-align: left;
+  word-break: break-all;
 }
 
 .input-container i {
@@ -43,9 +33,7 @@
 
 .input-container .destroy {
   opacity: 0;
-  /* position: absolute; */
   color: #cc9a9a;
-  /* margin-bottom: 11px; */
   transition: color 0.2s ease-out;
 }
 
@@ -75,24 +63,18 @@
 .input-container.edit input {
   text-decoration: none;
   color: initial;
-  /* color: #d9d9d9; */
 }
 
 .input-container.edit i {
-  /* display: none; */
-  padding: 10px;
-  /* font-size: 20px; */
+  /* padding: 10px; */
   opacity: 0;
-  min-width: 5%;
+  /* min-width: 5%; */
   pointer-events: none;
 }
 
 .input-container.edit .destroy {
   pointer-events: none;
   opacity: 0;
-  /* position: absolute; */
-  /* margin-bottom: 11px; */
-  /* transition: color 0.2s ease-out; */
 }
 
 .input-container .searchIconToggle {
@@ -100,5 +82,45 @@
 }
 
 .input-container .searchIconInvis {
+  opacity: 0;
+}
+
+.filter {
+  /* border: 2px solid black; */
+  border: 1px solid lightgrey;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* border: 2px solid black; */
+}
+.filter label {
+  font-size: 12px;
+  padding: 8px;
+  color: inherit;
+}
+.filter-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-button-container button {
+  background-color: white;
+  color: black;
+  margin: 2px;
+  border: 1px solid transparent;
+  font-size: 12px;
+}
+
+.filter-button-container button.selected {
+  border: 1px solid grey;
+}
+
+.filter-button-container button:focus {
+  outline: 0;
+}
+
+.hide-clear-completed {
+  pointer-events: none;
   opacity: 0;
 }

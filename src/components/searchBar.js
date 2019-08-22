@@ -25,15 +25,16 @@ class SearchBar extends React.Component {
 
   renderSearchIcon() {
     const { length: count } = this.props.todoItems;
-    const { toggleAll } = this.props;
+    const { activeTodoCount } = this.props;
+
     if (!count) {
       return (
         <i className="fas fa-chevron-down fa-w-14 fa-2x searchIconInvis" />
       );
     } else {
-      const searchIconClassName = toggleAll
-        ? "fas fa-chevron-down fa-w-14 fa-2x searchIconToggle"
-        : "fas fa-chevron-down fa-w-14 fa-2x";
+      const searchIconClassName = activeTodoCount
+        ? "fas fa-chevron-down fa-w-14 fa-2x"
+        : "fas fa-chevron-down fa-w-14 fa-2x searchIconToggle";
 
       return (
         <i className={searchIconClassName} onClick={this.handleToggleAll} />
