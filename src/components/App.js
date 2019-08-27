@@ -9,21 +9,34 @@ class App extends Component {
     activeFilter: "All"
   };
 
+  componentDidMount() {
+    const store = require("store");
+    const todoItems = store.get("todoItems") ? store.get("todoItems") : [];
+    const toggleAll = store.get("toggleAll");
+
+    this.setState({ todoItems, toggleAll });
+  }
+
   addTodoItem = todoItem => {
     todoItem.id = Math.random();
     todoItem.completed = false;
+    const store = require("store");
     const todoItems = [...this.state.todoItems, todoItem];
     const toggleAll = this.state.toggleAll;
     if (toggleAll) {
       this.setState({ todoItems, toggleAll: false });
+      store.set("todoItems", todoItems);
+      store.set("toggleAll", { toggleAll: false });
     } else {
       this.setState({ todoItems });
+      store.set("todoItems", todoItems);
     }
   };
 
   deleteTodoItem = todoItem => {
     const todoItems = this.state.todoItems.filter(item => item.id !== todoItem);
-
+    const store = require("store");
+    store.set("todoItems", todoItems);
     this.setState({ todoItems });
   };
 
@@ -36,11 +49,20 @@ class App extends Component {
       return todo.completed ? accum : accum + 1;
     }, 0);
 
+    const store = require("store");
+
     if (activeTodoCount === 0) {
+      store.set("todoItems", todoItems);
+      store.set("toggleAll", { toggleAll: true });
       this.setState({ toggleAll: true, todoItems });
     } else if (todoItems[index].completed === false) {
+      store.set("todoItems", todoItems);
+      store.set("toggleAll", { toggleAll: false });
       this.setState({ toggleAll: false, todoItems });
-    } else this.setState({ todoItems });
+    } else {
+      store.set("todoItems", todoItems);
+      this.setState({ todoItems });
+    }
   };
 
   toggleAllComplete = () => {
@@ -53,6 +75,10 @@ class App extends Component {
         return todo;
       }
     });
+
+    const store = require("store");
+    store.set("todoItems", todoItems);
+    store.set("toggleAll", toggleAll);
 
     this.setState({ todoItems, toggleAll });
   };
@@ -67,6 +93,10 @@ class App extends Component {
 
   clearTodoItems = () => {
     const todoItems = this.state.todoItems.filter(todo => !todo.completed);
+
+    const store = require("store");
+    store.set("todoItems", todoItems);
+
     this.setState({ todoItems });
   };
 
@@ -74,6 +104,9 @@ class App extends Component {
     const todoItems = [...this.state.todoItems];
     const index = todoItems.indexOf(todoItem);
     todoItems[index].content = content;
+
+    const store = require("store");
+    store.set("todoItems", todoItems);
 
     this.setState({ todoItems, editing: null });
   };
@@ -156,6 +189,8 @@ class App extends Component {
   }
 
   render() {
+    // console.log(this.state.todoItems);
+
     const activeTodoCount = this.state.todoItems.reduce((accum, todo) => {
       return todo.completed ? accum : accum + 1;
     }, 0);

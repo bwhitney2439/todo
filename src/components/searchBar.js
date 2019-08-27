@@ -32,17 +32,21 @@ class SearchBar extends React.Component {
         <i className="fas fa-chevron-down fa-w-14 fa-2x searchIconInvis" />
       );
     } else {
-      const searchIconClassName = activeTodoCount
-        ? "fas fa-chevron-down fa-w-14 fa-2x"
-        : "fas fa-chevron-down fa-w-14 fa-2x searchIconToggle";
-
       return (
-        <i className={searchIconClassName} onClick={this.handleToggleAll} />
+        <i
+          className={
+            activeTodoCount
+              ? "fas fa-chevron-down fa-w-14 fa-2x"
+              : "fas fa-chevron-down fa-w-14 fa-2x searchIconToggle"
+          }
+          onClick={this.handleToggleAll}
+        />
       );
     }
   }
 
   render() {
+    console.log(this.props.toggleAll);
     return (
       <div className="input-container">
         {this.renderSearchIcon()}
