@@ -13,6 +13,7 @@ class App extends Component {
     const store = require("store");
     const todoItems = store.get("todoItems") ? store.get("todoItems") : [];
     const toggleAll = store.get("toggleAll");
+    const toggleAll = store.get("toggleAll");
 
     this.setState({ todoItems, toggleAll });
   }
