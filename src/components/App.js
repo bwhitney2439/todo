@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import SearchBar from "./searchBar";
 import TodoItem from "./todoItem";
 import NavBar from "./navBar";
-import withFirebaseAuth from "react-with-firebase-auth";
-import * as firebase from "firebase/app";
-import "firebase/auth";
-import fbConfig from "../config/fbConfig";
+// import withFirebaseAuth from "react-with-firebase-auth";
+// import * as firebase from "firebase/app";
+// import "firebase/auth";
+// import fbConfig from "../config/fbConfig";
 
 import { connect } from "react-redux";
 
@@ -34,21 +34,21 @@ class App extends Component {
     this.setState({ todoItems, toggleAll });
   }
 
-  addTodoItem = todoItem => {
-    todoItem.id = Math.random();
-    todoItem.completed = false;
-    const store = require("store");
-    const todoItems = [...this.state.todoItems, todoItem];
-    const toggleAll = this.state.toggleAll;
-    if (toggleAll) {
-      this.setState({ todoItems, toggleAll: false });
-      store.set("todoItems", todoItems);
-      store.set("toggleAll", { toggleAll: false });
-    } else {
-      this.setState({ todoItems });
-      store.set("todoItems", todoItems);
-    }
-  };
+  // addTodoItem = todoItem => {
+  //   todoItem.id = Math.random();
+  //   todoItem.completed = false;
+  //   const store = require("store");
+  //   const todoItems = [...this.state.todoItems, todoItem];
+  //   const toggleAll = this.state.toggleAll;
+  //   if (toggleAll) {
+  //     this.setState({ todoItems, toggleAll: false });
+  //     store.set("todoItems", todoItems);
+  //     store.set("toggleAll", { toggleAll: false });
+  //   } else {
+  //     this.setState({ todoItems });
+  //     store.set("todoItems", todoItems);
+  //   }
+  // };
 
   deleteTodoItem = todoItem => {
     const todoItems = this.state.todoItems.filter(item => item.id !== todoItem);
@@ -82,23 +82,23 @@ class App extends Component {
     }
   };
 
-  toggleAllComplete = () => {
-    const toggleAll = !this.state.toggleAll;
-    const todoItems = this.state.todoItems.map(todo => {
-      if (toggleAll !== todo.completed) {
-        todo.completed = !todo.completed;
-        return todo;
-      } else {
-        return todo;
-      }
-    });
+  // toggleAllComplete = () => {
+  //   const toggleAll = !this.state.toggleAll;
+  //   const todoItems = this.state.todoItems.map(todo => {
+  //     if (toggleAll !== todo.completed) {
+  //       todo.completed = !todo.completed;
+  //       return todo;
+  //     } else {
+  //       return todo;
+  //     }
+  //   });
 
-    const store = require("store");
-    store.set("todoItems", todoItems);
-    store.set("toggleAll", toggleAll);
+  //   const store = require("store");
+  //   store.set("todoItems", todoItems);
+  //   store.set("toggleAll", toggleAll);
 
-    this.setState({ todoItems, toggleAll });
-  };
+  //   this.setState({ todoItems, toggleAll });
+  // };
 
   toggleEdit = todoItem => {
     this.setState({ editing: todoItem.id });
@@ -209,8 +209,9 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props);
+    console.log(this.props.todos);
     const { todos, user, signOut, signInWithGithub } = this.props;
+    // const { todos } = this.props;
 
     const activeTodoCount = todos.reduce((accum, todo) => {
       return todo.completed ? accum : accum + 1;
@@ -230,10 +231,10 @@ class App extends Component {
             <h1>todo</h1>
           </header>
           <SearchBar
-            addTodoItem={this.addTodoItem}
-            toggleAllComplete={this.toggleAllComplete}
-            todoItems={todos}
-            toggleAll={this.state.toggleAll}
+            // addTodoItem={this.addTodoItem}
+            // toggleAllComplete={this.toggleAllComplete}
+            todos={todos}
+            // toggleAll={this.state.toggleAll}
             activeTodoCount={activeTodoCount}
           />
           {filteredTodos}
@@ -246,7 +247,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    todos: state.todos.todos
+    todos: state.todos
   };
 };
 export default connect(mapStateToProps)(App);

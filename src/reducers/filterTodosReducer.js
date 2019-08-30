@@ -1,12 +1,8 @@
-const INITIAL_STATE = [
-  { id: "1", completed: false, content: "make tea" },
-  { id: "2", completed: false, content: "eat chocolate" },
-  { id: "3", completed: false, content: "laugh out loud" }
-];
+const INITIAL_STATE = { activeFilter: "All" };
 
 const todoReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "ADD_TODO":
+    case "FILTER_ALL":
       return [
         ...state,
         {

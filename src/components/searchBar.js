@@ -1,15 +1,20 @@
 import React from "react";
+import { connect } from "react-redux";
+import { addTodo, toggleAllComplete } from "./../actions/index";
 
 const ENTER_KEY = 13;
 
 class SearchBar extends React.Component {
-  state = { content: "" };
+  state = { content: "", toggleAll: false };
 
   handleNewTodoKeyDown = event => {
+    const { dispatch } = this.props;
     if (event.keyCode === ENTER_KEY && this.state.content !== "") {
       event.preventDefault();
 
-      this.props.addTodoItem(this.state);
+      // addTodoItem(this.state);
+
+      dispatch(addTodo(this.state.content));
 
       this.setState({ content: "" });
     }
@@ -20,11 +25,18 @@ class SearchBar extends React.Component {
   };
 
   handleToggleAll = () => {
-    this.props.toggleAllComplete();
+    const { dispatch } = this.props;
+    const toggleAll = !this.state.toggleAll;
+
+    dispatch(toggleAllComplete(toggleAll));
+
+    this.setState({ toggleAll });
+
+    // this.props.toggleAllComplete();
   };
 
   renderSearchIcon() {
-    const { length: count } = this.props.todoItems;
+    const { length: count } = this.props.todos;
     const { activeTodoCount } = this.props;
 
     if (!count) {
@@ -46,7 +58,6 @@ class SearchBar extends React.Component {
   }
 
   render() {
-    console.log(this.props.toggleAll);
     return (
       <div className="input-container">
         {this.renderSearchIcon()}
@@ -63,4 +74,4 @@ class SearchBar extends React.Component {
   }
 }
 
-export default SearchBar;
+export default connect()(SearchBar);
