@@ -1,6 +1,23 @@
 import React, { Component } from "react";
 import SearchBar from "./searchBar";
 import TodoItem from "./todoItem";
+import NavBar from "./navBar";
+import withFirebaseAuth from "react-with-firebase-auth";
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import fbConfig from "../config/fbConfig";
+
+import { connect } from "react-redux";
+
+// // Initialize Firebase
+// const firebaseApp = firebase.initializeApp(fbConfig);
+// // firebase.firestore().settings({ timestampsInSnapshots: true });
+
+// const firebaseAppAuth = firebaseApp.auth();
+// const providers = {
+//   githubProvider: new firebase.auth.GithubAuthProvider()
+// };
+
 class App extends Component {
   state = {
     todoItems: [],
@@ -12,7 +29,6 @@ class App extends Component {
   componentDidMount() {
     const store = require("store");
     const todoItems = store.get("todoItems") ? store.get("todoItems") : [];
-    const toggleAll = store.get("toggleAll");
     const toggleAll = store.get("toggleAll");
 
     this.setState({ todoItems, toggleAll });
@@ -116,8 +132,8 @@ class App extends Component {
     this.setState({ activeFilter: filter });
   };
 
-  renderTodoList() {
-    const filteredTodos = this.state.todoItems.filter(todo => {
+  renderTodoList(todos) {
+    const filteredTodos = todos.filter(todo => {
       switch (this.state.activeFilter) {
         case "Active":
           return !todo.completed;
@@ -143,7 +159,10 @@ class App extends Component {
       );
     });
 
-    return { todos: renderedTodos, filteredTodosCount: renderedTodos.length };
+    return {
+      filteredTodos: renderedTodos,
+      filteredTodosCount: renderedTodos.length
+    };
   }
 
   renderFooter(filteredTodosCount, activeTodoCount) {
@@ -190,31 +209,44 @@ class App extends Component {
   }
 
   render() {
-    // console.log(this.state.todoItems);
+    console.log(this.props);
+    const { todos, user, signOut, signInWithGithub } = this.props;
 
-    const activeTodoCount = this.state.todoItems.reduce((accum, todo) => {
+    const activeTodoCount = todos.reduce((accum, todo) => {
       return todo.completed ? accum : accum + 1;
     }, 0);
 
-    const { todos, filteredTodosCount } = this.renderTodoList();
+    const { filteredTodos, filteredTodosCount } = this.renderTodoList(todos);
 
     return (
-      <div className="container">
-        <header>
-          <h1>todo</h1>
-        </header>
-        <SearchBar
-          addTodoItem={this.addTodoItem}
-          toggleAllComplete={this.toggleAllComplete}
-          todoItems={this.state.todoItems}
-          toggleAll={this.state.toggleAll}
-          activeTodoCount={activeTodoCount}
+      <React.Fragment>
+        <NavBar
+          user={user}
+          signOut={signOut}
+          signInWithGithub={signInWithGithub}
         />
-        {todos}
-        {this.renderFooter(filteredTodosCount, activeTodoCount)}
-      </div>
+        <div className="container">
+          <header>
+            <h1>todo</h1>
+          </header>
+          <SearchBar
+            addTodoItem={this.addTodoItem}
+            toggleAllComplete={this.toggleAllComplete}
+            todoItems={todos}
+            toggleAll={this.state.toggleAll}
+            activeTodoCount={activeTodoCount}
+          />
+          {filteredTodos}
+          {this.renderFooter(filteredTodosCount, activeTodoCount)}
+        </div>
+      </React.Fragment>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    todos: state.todos.todos
+  };
+};
+export default connect(mapStateToProps)(App);
