@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { toggleTodo, deleteTodo } from "./../actions/index";
 
 const ENTER_KEY = 13;
 const ESCAPE_KEY = 27;
@@ -61,12 +63,12 @@ class TodoItem extends React.Component {
   };
 
   render() {
-    const { todoItem, toggleComplete, deleteTodoItem, editing } = this.props;
+    const { todoItem, editing, dispatch } = this.props;
 
     return (
       <div className={`input-container ${editing ? "edit" : ""}`}>
         <i
-          onClick={() => toggleComplete(todoItem)}
+          onClick={() => dispatch(toggleTodo(todoItem.id))}
           className={`far ${
             todoItem.completed ? "fa-check-circle" : "fa-circle"
           } fa-w-14 fa-2x`}
@@ -74,13 +76,11 @@ class TodoItem extends React.Component {
         {this.renderInput()}
         <i
           className="fas fa-times fa-w-14 fa-2x destroy"
-          onClick={() => {
-            deleteTodoItem(todoItem.id);
-          }}
+          onClick={() => dispatch(deleteTodo(todoItem.id))}
         />
       </div>
     );
   }
 }
 
-export default TodoItem;
+export default connect()(TodoItem);

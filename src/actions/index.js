@@ -9,7 +9,17 @@ export const toggleTodo = id => ({
   id
 });
 
+export const deleteTodo = id => ({
+  type: "DELETE_TODO",
+  id
+});
+
 export const toggleAllComplete = toggleAll => ({
   type: "TOGGLE_ALL",
   toggleAll
+});
+
+export const filterTodos = activeFilter => ({
+  type: "FILTER_TODOS",
+  activeFilter
 });

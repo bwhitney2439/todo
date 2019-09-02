@@ -1,25 +1,15 @@
 const INITIAL_STATE = { activeFilter: "All" };
 
-const todoReducer = (state = INITIAL_STATE, action) => {
+const filterTodosReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "FILTER_ALL":
-      return [
+    case "FILTER_TODOS":
+      return {
         ...state,
-        {
-          id: action.id,
-          content: action.content,
-          completed: false
-        }
-      ];
-    case "TOGGLE_TODO":
-      return state.map(todo =>
-        todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
-      );
-    case "TOGGLE_ALL":
-      return state.map(todo => ({ ...todo, completed: action.toggleAll }));
+        activeFilter: action.activeFilter
+      };
     default:
       return state;
   }
 };
 
-export default todoReducer;
+export default filterTodosReducer;

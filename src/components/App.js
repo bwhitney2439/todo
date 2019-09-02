@@ -6,7 +6,7 @@ import NavBar from "./navBar";
 // import * as firebase from "firebase/app";
 // import "firebase/auth";
 // import fbConfig from "../config/fbConfig";
-
+import { filterTodos } from "../actions/index";
 import { connect } from "react-redux";
 
 // // Initialize Firebase
@@ -33,72 +33,6 @@ class App extends Component {
 
     this.setState({ todoItems, toggleAll });
   }
-
-  // addTodoItem = todoItem => {
-  //   todoItem.id = Math.random();
-  //   todoItem.completed = false;
-  //   const store = require("store");
-  //   const todoItems = [...this.state.todoItems, todoItem];
-  //   const toggleAll = this.state.toggleAll;
-  //   if (toggleAll) {
-  //     this.setState({ todoItems, toggleAll: false });
-  //     store.set("todoItems", todoItems);
-  //     store.set("toggleAll", { toggleAll: false });
-  //   } else {
-  //     this.setState({ todoItems });
-  //     store.set("todoItems", todoItems);
-  //   }
-  // };
-
-  deleteTodoItem = todoItem => {
-    const todoItems = this.state.todoItems.filter(item => item.id !== todoItem);
-    const store = require("store");
-    store.set("todoItems", todoItems);
-    this.setState({ todoItems });
-  };
-
-  toggleComplete = todoItem => {
-    const todoItems = [...this.state.todoItems];
-    const index = todoItems.indexOf(todoItem);
-    todoItems[index].completed = !todoItems[index].completed;
-
-    const activeTodoCount = todoItems.reduce((accum, todo) => {
-      return todo.completed ? accum : accum + 1;
-    }, 0);
-
-    const store = require("store");
-
-    if (activeTodoCount === 0) {
-      store.set("todoItems", todoItems);
-      store.set("toggleAll", { toggleAll: true });
-      this.setState({ toggleAll: true, todoItems });
-    } else if (todoItems[index].completed === false) {
-      store.set("todoItems", todoItems);
-      store.set("toggleAll", { toggleAll: false });
-      this.setState({ toggleAll: false, todoItems });
-    } else {
-      store.set("todoItems", todoItems);
-      this.setState({ todoItems });
-    }
-  };
-
-  // toggleAllComplete = () => {
-  //   const toggleAll = !this.state.toggleAll;
-  //   const todoItems = this.state.todoItems.map(todo => {
-  //     if (toggleAll !== todo.completed) {
-  //       todo.completed = !todo.completed;
-  //       return todo;
-  //     } else {
-  //       return todo;
-  //     }
-  //   });
-
-  //   const store = require("store");
-  //   store.set("todoItems", todoItems);
-  //   store.set("toggleAll", toggleAll);
-
-  //   this.setState({ todoItems, toggleAll });
-  // };
 
   toggleEdit = todoItem => {
     this.setState({ editing: todoItem.id });
@@ -133,8 +67,9 @@ class App extends Component {
   };
 
   renderTodoList(todos) {
+    const { activeFilter } = this.props.activeFilter;
     const filteredTodos = todos.filter(todo => {
-      switch (this.state.activeFilter) {
+      switch (activeFilter) {
         case "Active":
           return !todo.completed;
         case "Completed":
@@ -148,8 +83,6 @@ class App extends Component {
         <TodoItem
           key={todoItem.id}
           todoItem={todoItem}
-          deleteTodoItem={this.deleteTodoItem}
-          toggleComplete={this.toggleComplete}
           toggleAll={this.state.toggleAll}
           toggleEdit={this.toggleEdit}
           editTodoItem={this.editTodoItem}
@@ -166,8 +99,9 @@ class App extends Component {
   }
 
   renderFooter(filteredTodosCount, activeTodoCount) {
-    const { activeFilter } = this.state;
-    const { length: totalTodosCount } = this.state.todoItems;
+    const { activeFilter } = this.props.activeFilter;
+    const { dispatch } = this.props;
+    const { length: totalTodosCount } = this.props.todos;
 
     const completedTodoCount = totalTodosCount - activeTodoCount;
 
@@ -180,19 +114,19 @@ class App extends Component {
           <div className="filter-button-container">
             <button
               className={activeFilter === "All" ? "selected" : ""}
-              onClick={() => this.filterTodoItems("All")}
+              onClick={() => dispatch(filterTodos("All"))}
             >
               All
             </button>
             <button
               className={activeFilter === "Active" ? "selected" : ""}
-              onClick={() => this.filterTodoItems("Active")}
+              onClick={() => dispatch(filterTodos("Active"))}
             >
               Active
             </button>
             <button
               className={activeFilter === "Completed" ? "selected" : ""}
-              onClick={() => this.filterTodoItems("Completed")}
+              onClick={() => dispatch(filterTodos("Completed"))}
             >
               Completed
             </button>
@@ -209,9 +143,8 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props.todos);
+    // console.log(this.props);
     const { todos, user, signOut, signInWithGithub } = this.props;
-    // const { todos } = this.props;
 
     const activeTodoCount = todos.reduce((accum, todo) => {
       return todo.completed ? accum : accum + 1;
@@ -230,13 +163,7 @@ class App extends Component {
           <header>
             <h1>todo</h1>
           </header>
-          <SearchBar
-            // addTodoItem={this.addTodoItem}
-            // toggleAllComplete={this.toggleAllComplete}
-            todos={todos}
-            // toggleAll={this.state.toggleAll}
-            activeTodoCount={activeTodoCount}
-          />
+          <SearchBar todos={todos} activeTodoCount={activeTodoCount} />
           {filteredTodos}
           {this.renderFooter(filteredTodosCount, activeTodoCount)}
         </div>
@@ -247,7 +174,8 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    todos: state.todos
+    todos: state.todos,
+    activeFilter: state.activeFilter
   };
 };
 export default connect(mapStateToProps)(App);

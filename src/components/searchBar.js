@@ -5,14 +5,12 @@ import { addTodo, toggleAllComplete } from "./../actions/index";
 const ENTER_KEY = 13;
 
 class SearchBar extends React.Component {
-  state = { content: "", toggleAll: false };
+  state = { content: "" };
 
   handleNewTodoKeyDown = event => {
     const { dispatch } = this.props;
     if (event.keyCode === ENTER_KEY && this.state.content !== "") {
       event.preventDefault();
-
-      // addTodoItem(this.state);
 
       dispatch(addTodo(this.state.content));
 
@@ -24,15 +22,11 @@ class SearchBar extends React.Component {
     this.setState({ content: event.target.value });
   };
 
-  handleToggleAll = () => {
+  handleToggleAll = event => {
     const { dispatch } = this.props;
-    const toggleAll = !this.state.toggleAll;
+    const toggleAll = event.target.checked;
 
     dispatch(toggleAllComplete(toggleAll));
-
-    this.setState({ toggleAll });
-
-    // this.props.toggleAllComplete();
   };
 
   renderSearchIcon() {
@@ -41,18 +35,23 @@ class SearchBar extends React.Component {
 
     if (!count) {
       return (
-        <i className="fas fa-chevron-down fa-w-14 fa-2x searchIconInvis" />
+        <i className="fas fa-chevron-down fa-w-14 fa-2x searchIconInvis hide-input" />
       );
     } else {
       return (
-        <i
-          className={
-            activeTodoCount
-              ? "fas fa-chevron-down fa-w-14 fa-2x"
-              : "fas fa-chevron-down fa-w-14 fa-2x searchIconToggle"
-          }
-          onClick={this.handleToggleAll}
-        />
+        <div className="pretty p-icon p-toggle p-plain">
+          <input
+            type="checkbox"
+            checked={activeTodoCount === 0}
+            onChange={this.handleToggleAll}
+          />
+          <div className="state p-off">
+            <i className="fas fa-chevron-down fa-w-14 fa-2x"></i>
+          </div>
+          <div className="state p-on">
+            <i className="fas fa-chevron-down fa-w-14 fa-2x searchIconToggle" />
+          </div>
+        </div>
       );
     }
   }
