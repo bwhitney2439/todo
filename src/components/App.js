@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import SearchBar from "./searchBar";
 import TodoItem from "./todoItem";
 import NavBar from "./navBar";
+import Footer from "./footer";
 // import withFirebaseAuth from "react-with-firebase-auth";
 // import * as firebase from "firebase/app";
 // import "firebase/auth";
 // import fbConfig from "../config/fbConfig";
-import { filterTodos } from "../actions/index";
 import { connect } from "react-redux";
 
 // // Initialize Firebase
@@ -20,10 +20,7 @@ import { connect } from "react-redux";
 
 class App extends Component {
   state = {
-    todoItems: [],
-    editing: false,
-    toggleAll: false,
-    activeFilter: "All"
+    editing: false
   };
 
   componentDidMount() {
@@ -42,15 +39,6 @@ class App extends Component {
     this.setState({ editing: null });
   };
 
-  clearTodoItems = () => {
-    const todoItems = this.state.todoItems.filter(todo => !todo.completed);
-
-    const store = require("store");
-    store.set("todoItems", todoItems);
-
-    this.setState({ todoItems });
-  };
-
   editTodoItem = (content, todoItem) => {
     const todoItems = [...this.state.todoItems];
     const index = todoItems.indexOf(todoItem);
@@ -60,10 +48,6 @@ class App extends Component {
     store.set("todoItems", todoItems);
 
     this.setState({ todoItems, editing: null });
-  };
-
-  filterTodoItems = filter => {
-    this.setState({ activeFilter: filter });
   };
 
   renderTodoList(todos) {
@@ -98,57 +82,17 @@ class App extends Component {
     };
   }
 
-  renderFooter(filteredTodosCount, activeTodoCount) {
-    const { activeFilter } = this.props.activeFilter;
-    const { dispatch } = this.props;
-    const { length: totalTodosCount } = this.props.todos;
-
-    const completedTodoCount = totalTodosCount - activeTodoCount;
-
-    if (!totalTodosCount) {
-      return null;
-    } else {
-      return (
-        <div className="filter">
-          <label>{filteredTodosCount} items</label>
-          <div className="filter-button-container">
-            <button
-              className={activeFilter === "All" ? "selected" : ""}
-              onClick={() => dispatch(filterTodos("All"))}
-            >
-              All
-            </button>
-            <button
-              className={activeFilter === "Active" ? "selected" : ""}
-              onClick={() => dispatch(filterTodos("Active"))}
-            >
-              Active
-            </button>
-            <button
-              className={activeFilter === "Completed" ? "selected" : ""}
-              onClick={() => dispatch(filterTodos("Completed"))}
-            >
-              Completed
-            </button>
-          </div>
-          <label
-            className={completedTodoCount ? "" : "hide-clear-completed"}
-            onClick={this.clearTodoItems}
-          >
-            Clear Completed
-          </label>
-        </div>
-      );
-    }
-  }
-
   render() {
     // console.log(this.props);
     const { todos, user, signOut, signInWithGithub } = this.props;
+    const { length: totalTodosCount } = this.props.todos;
+    const { activeFilter } = this.props.activeFilter;
 
     const activeTodoCount = todos.reduce((accum, todo) => {
       return todo.completed ? accum : accum + 1;
     }, 0);
+
+    const completedTodoCount = totalTodosCount - activeTodoCount;
 
     const { filteredTodos, filteredTodosCount } = this.renderTodoList(todos);
 
@@ -165,7 +109,12 @@ class App extends Component {
           </header>
           <SearchBar todos={todos} activeTodoCount={activeTodoCount} />
           {filteredTodos}
-          {this.renderFooter(filteredTodosCount, activeTodoCount)}
+          <Footer
+            activeFilter={activeFilter}
+            completedTodoCount={completedTodoCount}
+            filteredTodosCount={filteredTodosCount}
+            totalTodosCount={totalTodosCount}
+          />
         </div>
       </React.Fragment>
     );

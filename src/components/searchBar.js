@@ -22,16 +22,9 @@ class SearchBar extends React.Component {
     this.setState({ content: event.target.value });
   };
 
-  handleToggleAll = event => {
-    const { dispatch } = this.props;
-    const toggleAll = event.target.checked;
-
-    dispatch(toggleAllComplete(toggleAll));
-  };
-
   renderSearchIcon() {
     const { length: count } = this.props.todos;
-    const { activeTodoCount } = this.props;
+    const { activeTodoCount, dispatch } = this.props;
 
     if (!count) {
       return (
@@ -43,7 +36,9 @@ class SearchBar extends React.Component {
           <input
             type="checkbox"
             checked={activeTodoCount === 0}
-            onChange={this.handleToggleAll}
+            onChange={event =>
+              dispatch(toggleAllComplete(event.target.checked))
+            }
           />
           <div className="state p-off">
             <i className="fas fa-chevron-down fa-w-14 fa-2x"></i>
