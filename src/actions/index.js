@@ -27,3 +27,9 @@ export const filterTodos = activeFilter => ({
 export const clearTodoItems = () => ({
   type: "CLEAR_TODOS"
 });
+
+export const editTodo = (content, id) => ({
+  type: "EDIT_TODO",
+  content,
+  id
+});

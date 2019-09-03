@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addTodo, toggleAllComplete } from "./../actions/index";
+import { addTodo, toggleAllComplete } from "../actions/index";
 
 const ENTER_KEY = 13;
 
-class SearchBar extends React.Component {
+class AddTodo extends React.Component {
   state = { content: "" };
 
   handleNewTodoKeyDown = event => {
@@ -27,13 +27,12 @@ class SearchBar extends React.Component {
     const { activeTodoCount, dispatch } = this.props;
 
     if (!count) {
-      return (
-        <i className="fas fa-chevron-down fa-w-14 fa-2x searchIconInvis hide-input" />
-      );
+      return <i className="fas fa-chevron-down fa-w-14 fa-2x hide-input" />;
     } else {
       return (
         <div className="pretty p-icon p-toggle p-plain">
           <input
+            className="addtodo-input-checkbox"
             type="checkbox"
             checked={activeTodoCount === 0}
             onChange={event =>
@@ -44,7 +43,7 @@ class SearchBar extends React.Component {
             <i className="fas fa-chevron-down fa-w-14 fa-2x"></i>
           </div>
           <div className="state p-on">
-            <i className="fas fa-chevron-down fa-w-14 fa-2x searchIconToggle" />
+            <i className="fas fa-chevron-down fa-w-14 fa-2x addtodotoggle" />
           </div>
         </div>
       );
@@ -53,7 +52,7 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <div className="input-container">
+      <div className="addtodo-input-container">
         {this.renderSearchIcon()}
         <input
           type="text"
@@ -68,4 +67,4 @@ class SearchBar extends React.Component {
   }
 }
 
-export default connect()(SearchBar);
+export default connect()(AddTodo);

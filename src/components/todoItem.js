@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { toggleTodo, deleteTodo } from "./../actions/index";
+import { toggleTodo, deleteTodo, editTodo } from "./../actions/index";
 
 const ENTER_KEY = 13;
 const ESCAPE_KEY = 27;
 
 class TodoItem extends React.Component {
-  state = { value: "", content: "" };
+  state = { content: "", editing: false };
 
   componentDidMount() {
     this.setState({ content: this.props.todoItem.content });
@@ -14,26 +14,27 @@ class TodoItem extends React.Component {
 
   handleEditTodoKeyDown = event => {
     if (event.keyCode === ENTER_KEY) {
-      this.props.editTodoItem(this.state.content, this.props.todoItem);
+      this.props.dispatch(editTodo(this.state.content, this.props.todoItem.id));
+      this.setState({ editing: false });
     } else if (event.keyCode === ESCAPE_KEY) {
-      this.setState({ content: this.props.todoItem.content });
-      this.props.cancelEdit();
+      this.setState({ content: this.props.todoItem.content, editing: false });
     }
   };
 
   handleEditTodoUnfocus = () => {
-    this.setState({ content: this.props.todoItem.content });
-    this.props.cancelEdit();
+    this.setState({ content: this.props.todoItem.content, editing: false });
   };
 
-  handleEditToDo = todoItem => {
-    this.props.toggleEdit(todoItem);
+  handleToggleEdit = () => {
+    const editing = !this.state.editing;
+    console.log(editing);
+    this.setState({ editing });
   };
 
   renderInput = () => {
-    const { todoItem, editing } = this.props;
+    const { todoItem } = this.props;
 
-    if (editing) {
+    if (this.state.editing) {
       return (
         <input
           className={todoItem.completed ? "input-completed input-edit" : ""}
@@ -50,7 +51,7 @@ class TodoItem extends React.Component {
       return (
         <label
           className={todoItem.completed ? "input-completed" : ""}
-          onDoubleClick={() => this.handleEditToDo(todoItem)}
+          onDoubleClick={this.handleToggleEdit}
         >
           {todoItem.content}
         </label>
@@ -63,10 +64,10 @@ class TodoItem extends React.Component {
   };
 
   render() {
-    const { todoItem, editing, dispatch } = this.props;
+    const { todoItem, dispatch } = this.props;
 
     return (
-      <div className={`input-container ${editing ? "edit" : ""}`}>
+      <div className={`input-container ${this.state.editing ? "edit" : ""}`}>
         <i
           onClick={() => dispatch(toggleTodo(todoItem.id))}
           className={`far ${

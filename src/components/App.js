@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SearchBar from "./searchBar";
+import AddTodo from "./addTodo";
 import TodoItem from "./todoItem";
 import NavBar from "./navBar";
 import Footer from "./footer";
@@ -20,35 +20,16 @@ import { connect } from "react-redux";
 
 class App extends Component {
   state = {
-    editing: false
+    editing: null
   };
 
-  componentDidMount() {
-    const store = require("store");
-    const todoItems = store.get("todoItems") ? store.get("todoItems") : [];
-    const toggleAll = store.get("toggleAll");
+  // componentDidMount() {
+  //   const store = require("store");
+  //   const todoItems = store.get("todoItems") ? store.get("todoItems") : [];
+  //   const toggleAll = store.get("toggleAll");
 
-    this.setState({ todoItems, toggleAll });
-  }
-
-  toggleEdit = todoItem => {
-    this.setState({ editing: todoItem.id });
-  };
-
-  cancelEdit = () => {
-    this.setState({ editing: null });
-  };
-
-  editTodoItem = (content, todoItem) => {
-    const todoItems = [...this.state.todoItems];
-    const index = todoItems.indexOf(todoItem);
-    todoItems[index].content = content;
-
-    const store = require("store");
-    store.set("todoItems", todoItems);
-
-    this.setState({ todoItems, editing: null });
-  };
+  //   this.setState({ todoItems, toggleAll });
+  // }
 
   renderTodoList(todos) {
     const { activeFilter } = this.props.activeFilter;
@@ -83,7 +64,6 @@ class App extends Component {
   }
 
   render() {
-    // console.log(this.props);
     const { todos, user, signOut, signInWithGithub } = this.props;
     const { length: totalTodosCount } = this.props.todos;
     const { activeFilter } = this.props.activeFilter;
@@ -103,11 +83,11 @@ class App extends Component {
           signOut={signOut}
           signInWithGithub={signInWithGithub}
         />
+        <header>
+          <h1 style={{ textAlign: "center" }}>todo</h1>
+        </header>
         <div className="container">
-          <header>
-            <h1>todo</h1>
-          </header>
-          <SearchBar todos={todos} activeTodoCount={activeTodoCount} />
+          <AddTodo todos={todos} activeTodoCount={activeTodoCount} />
           {filteredTodos}
           <Footer
             activeFilter={activeFilter}
