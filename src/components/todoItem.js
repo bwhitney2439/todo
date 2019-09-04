@@ -15,7 +15,7 @@ class TodoItem extends React.Component {
   handleEditTodoKeyDown = event => {
     const { editTodo, todoItem } = this.props;
     const { content } = this.state;
-    if (event.keyCode === ENTER_KEY) {
+    if (event.keyCode === ENTER_KEY && content !== "") {
       editTodo(content, todoItem.id);
       this.setState({ editing: false });
     } else if (event.keyCode === ESCAPE_KEY) {
