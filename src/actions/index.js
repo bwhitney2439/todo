@@ -1,3 +1,9 @@
+export const testAddTodo = content => {
+  return (dispatch, getState) => {
+    dispatch({ type: "ADD_TODO", id: Math.random(), content });
+  };
+};
+
 export const addTodo = content => ({
   type: "ADD_TODO",
   id: Math.random(),

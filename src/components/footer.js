@@ -33,7 +33,9 @@ function footer({
         </button>
       </div>
       <label
-        className={completedTodoCount ? "" : "hide-clear-completed"}
+        className={
+          completedTodoCount ? "clear-completed" : "hide-clear-completed"
+        }
         onClick={() => dispatch(clearTodoItems())}
       >
         Clear Completed

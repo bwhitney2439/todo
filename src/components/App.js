@@ -19,18 +19,6 @@ import { connect } from "react-redux";
 // };
 
 class App extends Component {
-  state = {
-    editing: null
-  };
-
-  // componentDidMount() {
-  //   const store = require("store");
-  //   const todoItems = store.get("todoItems") ? store.get("todoItems") : [];
-  //   const toggleAll = store.get("toggleAll");
-
-  //   this.setState({ todoItems, toggleAll });
-  // }
-
   renderTodoList(todos) {
     const { activeFilter } = this.props.activeFilter;
     const filteredTodos = todos.filter(todo => {
@@ -44,17 +32,7 @@ class App extends Component {
       }
     });
     const renderedTodos = filteredTodos.map(todoItem => {
-      return (
-        <TodoItem
-          key={todoItem.id}
-          todoItem={todoItem}
-          toggleAll={this.state.toggleAll}
-          toggleEdit={this.toggleEdit}
-          editTodoItem={this.editTodoItem}
-          cancelEdit={this.cancelEdit}
-          editing={this.state.editing === todoItem.id}
-        />
-      );
+      return <TodoItem key={todoItem.id} todoItem={todoItem} />;
     });
 
     return {
@@ -78,12 +56,12 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        <NavBar
-          user={user}
-          signOut={signOut}
-          signInWithGithub={signInWithGithub}
-        />
         <header>
+          <NavBar
+            user={user}
+            signOut={signOut}
+            signInWithGithub={signInWithGithub}
+          />
           <h1 style={{ textAlign: "center" }}>todo</h1>
         </header>
         <div className="container">

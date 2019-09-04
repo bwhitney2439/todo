@@ -1,4 +1,5 @@
 // import firebase from "firebase/app";
+import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
@@ -13,4 +14,8 @@ var firebaseConfig = {
   appId: "1:681169528526:web:617b27820300e4e8"
 };
 
-export default firebaseConfig;
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.firestore().settings({ timestampsInSnapshots: true });
+
+export default firebase;

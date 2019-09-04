@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addTodo, toggleAllComplete } from "../actions/index";
+import { addTodo, testAddTodo, toggleAllComplete } from "../actions/index";
 
 const ENTER_KEY = 13;
 
@@ -12,7 +12,7 @@ class AddTodo extends React.Component {
     if (event.keyCode === ENTER_KEY && this.state.content !== "") {
       event.preventDefault();
 
-      dispatch(addTodo(this.state.content));
+      dispatch(testAddTodo(this.state.content));
 
       this.setState({ content: "" });
     }

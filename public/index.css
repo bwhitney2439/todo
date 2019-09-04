@@ -1,6 +1,7 @@
 body {
   margin: 0;
 }
+
 .container {
   width: 550px;
   max-width: 100%;
@@ -150,6 +151,7 @@ body {
   margin: 2px;
   border: 1px solid transparent;
   font-size: 12px;
+  transition: border 0.5s;
 }
 
 .filter-button-container button.selected {
@@ -159,6 +161,15 @@ body {
 
 .filter-button-container button:focus {
   outline: 0;
+}
+
+.filter-button-container button:hover {
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.clear-completed:hover {
+  text-decoration: underline;
 }
 
 .hide-clear-completed {
