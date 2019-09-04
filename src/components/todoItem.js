@@ -13,33 +13,36 @@ class TodoItem extends React.Component {
   }
 
   handleEditTodoKeyDown = event => {
+    const { editTodo, todoItem } = this.props;
+    const { content } = this.state;
     if (event.keyCode === ENTER_KEY) {
-      this.props.dispatch(editTodo(this.state.content, this.props.todoItem.id));
+      editTodo(content, todoItem.id);
       this.setState({ editing: false });
     } else if (event.keyCode === ESCAPE_KEY) {
-      this.setState({ content: this.props.todoItem.content, editing: false });
+      this.setState({ content: todoItem.content, editing: false });
     }
   };
 
   handleEditTodoUnfocus = () => {
-    this.setState({ content: this.props.todoItem.content, editing: false });
+    const { todoItem } = this.props;
+    this.setState({ content: todoItem.content, editing: false });
   };
 
   handleToggleEdit = () => {
     const editing = !this.state.editing;
-    console.log(editing);
     this.setState({ editing });
   };
 
   renderInput = () => {
     const { todoItem } = this.props;
+    const { editing, content } = this.state;
 
-    if (this.state.editing) {
+    if (editing) {
       return (
         <input
           className={todoItem.completed ? "input-completed input-edit" : ""}
           type="text"
-          value={this.state.content}
+          value={content}
           onBlur={this.handleEditTodoUnfocus}
           onChange={this.handleChange}
           onKeyDown={this.handleEditTodoKeyDown}
@@ -64,12 +67,13 @@ class TodoItem extends React.Component {
   };
 
   render() {
-    const { todoItem, dispatch } = this.props;
+    const { todoItem, toggleTodo, deleteTodo } = this.props;
+    const { editing } = this.state;
 
     return (
-      <div className={`input-container ${this.state.editing ? "edit" : ""}`}>
+      <div className={`input-container ${editing ? "edit" : ""}`}>
         <i
-          onClick={() => dispatch(toggleTodo(todoItem.id))}
+          onClick={id => toggleTodo(todoItem.id)}
           className={`far ${
             todoItem.completed ? "fa-check-circle" : "fa-circle"
           } fa-w-14 fa-2x`}
@@ -77,11 +81,22 @@ class TodoItem extends React.Component {
         {this.renderInput()}
         <i
           className="fas fa-times fa-w-14 fa-2x destroy"
-          onClick={() => dispatch(deleteTodo(todoItem.id))}
+          onClick={id => deleteTodo(todoItem.id)}
         />
       </div>
     );
   }
 }
 
-export default connect()(TodoItem);
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleTodo: id => dispatch(toggleTodo(id)),
+    deleteTodo: id => dispatch(deleteTodo(id)),
+    editTodo: (content, id) => dispatch(editTodo(content, id))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(TodoItem);

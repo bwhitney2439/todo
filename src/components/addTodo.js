@@ -8,11 +8,12 @@ class AddTodo extends React.Component {
   state = { content: "" };
 
   handleNewTodoKeyDown = event => {
-    const { dispatch } = this.props;
-    if (event.keyCode === ENTER_KEY && this.state.content !== "") {
+    const { addTodo } = this.props;
+    const { content } = this.state;
+    if (event.keyCode === ENTER_KEY && content !== "") {
       event.preventDefault();
 
-      dispatch(testAddTodo(this.state.content));
+      addTodo(content);
 
       this.setState({ content: "" });
     }
@@ -24,7 +25,7 @@ class AddTodo extends React.Component {
 
   renderSearchIcon() {
     const { length: count } = this.props.todos;
-    const { activeTodoCount, dispatch } = this.props;
+    const { activeTodoCount, toggleAllComplete } = this.props;
 
     if (!count) {
       return <i className="fas fa-chevron-down fa-w-14 fa-2x hide-input" />;
@@ -35,9 +36,7 @@ class AddTodo extends React.Component {
             className="addtodo-input-checkbox"
             type="checkbox"
             checked={activeTodoCount === 0}
-            onChange={event =>
-              dispatch(toggleAllComplete(event.target.checked))
-            }
+            onChange={event => toggleAllComplete(event.target.checked)}
           />
           <div className="state p-off">
             <i className="fas fa-chevron-down fa-w-14 fa-2x"></i>
@@ -67,4 +66,15 @@ class AddTodo extends React.Component {
   }
 }
 
-export default connect()(AddTodo);
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleAllComplete: toggleAll => dispatch(toggleAllComplete(toggleAll)),
+    testAddTodo: content => dispatch(testAddTodo(content)),
+    addTodo: content => dispatch(addTodo(content))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AddTodo);

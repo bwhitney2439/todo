@@ -1,5 +1,5 @@
 export const testAddTodo = content => {
-  return (dispatch, getState) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
     dispatch({ type: "ADD_TODO", id: Math.random(), content });
   };
 };
