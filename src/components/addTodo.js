@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addTodo, testAddTodo, toggleAllComplete } from "../actions/index";
+import { addTodo, toggleAllComplete } from "../actions/index";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
 const ENTER_KEY = 13;
 
@@ -19,13 +21,18 @@ class AddTodo extends React.Component {
     }
   };
 
+  handleToggleAllComplete = event => {
+    const { toggleAllComplete } = this.props;
+    toggleAllComplete(event.target.checked);
+  };
+
   handleChange = event => {
     this.setState({ content: event.target.value });
   };
 
   renderSearchIcon() {
     const { length: count } = this.props.todos;
-    const { activeTodoCount, toggleAllComplete } = this.props;
+    const { activeTodoCount } = this.props;
 
     if (!count) {
       return <i className="fas fa-chevron-down fa-w-14 fa-2x hide-input" />;
@@ -36,7 +43,7 @@ class AddTodo extends React.Component {
             className="addtodo-input-checkbox"
             type="checkbox"
             checked={activeTodoCount === 0}
-            onChange={event => toggleAllComplete(event.target.checked)}
+            onChange={this.handleToggleAllComplete}
           />
           <div className="state p-off">
             <i className="fas fa-chevron-down fa-w-14 fa-2x"></i>
@@ -69,12 +76,14 @@ class AddTodo extends React.Component {
 const mapDispatchToProps = dispatch => {
   return {
     toggleAllComplete: toggleAll => dispatch(toggleAllComplete(toggleAll)),
-    testAddTodo: content => dispatch(testAddTodo(content)),
     addTodo: content => dispatch(addTodo(content))
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
+export default compose(
+  connect(
+    null,
+    mapDispatchToProps
+  ),
+  firestoreConnect([{ collection: "todos" }])
 )(AddTodo);

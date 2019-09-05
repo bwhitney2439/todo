@@ -3,20 +3,9 @@ import AddTodo from "./addTodo";
 import TodoItem from "./todoItem";
 import NavBar from "./navBar";
 import Footer from "./footer";
-// import withFirebaseAuth from "react-with-firebase-auth";
-// import * as firebase from "firebase/app";
-// import "firebase/auth";
-// import fbConfig from "../config/fbConfig";
 import { connect } from "react-redux";
-
-// // Initialize Firebase
-// const firebaseApp = firebase.initializeApp(fbConfig);
-// // firebase.firestore().settings({ timestampsInSnapshots: true });
-
-// const firebaseAppAuth = firebaseApp.auth();
-// const providers = {
-//   githubProvider: new firebase.auth.GithubAuthProvider()
-// };
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
 class App extends Component {
   renderTodoList(todos) {
@@ -80,9 +69,13 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
-    todos: state.todos,
+    todos: state.firestore.ordered.todos || [],
     activeFilter: state.activeFilter
   };
 };
-export default connect(mapStateToProps)(App);
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([{ collection: "todos" }])
+)(App);
