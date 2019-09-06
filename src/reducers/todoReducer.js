@@ -15,6 +15,9 @@ const todoReducer = (state = INITIAL_STATE, action) => {
           completed: false
         }
       ];
+    case "ADD_TODO_ERROR":
+      console.log("add todo error", action.err);
+      return state;
     case "TOGGLE_TODO":
       return state.map(todo =>
         todo.id === action.id ? { ...todo, completed: !todo.completed } : todo

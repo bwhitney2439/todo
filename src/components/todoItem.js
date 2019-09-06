@@ -73,7 +73,7 @@ class TodoItem extends React.Component {
     return (
       <div className={`input-container ${editing ? "edit" : ""}`}>
         <i
-          onClick={id => toggleTodo(todoItem.id)}
+          onClick={() => toggleTodo(todoItem)}
           className={`far ${
             todoItem.completed ? "fa-check-circle" : "fa-circle"
           } fa-w-14 fa-2x`}
@@ -81,7 +81,7 @@ class TodoItem extends React.Component {
         {this.renderInput()}
         <i
           className="fas fa-times fa-w-14 fa-2x destroy"
-          onClick={id => deleteTodo(todoItem.id)}
+          onClick={() => deleteTodo(todoItem)}
         />
       </div>
     );
@@ -90,8 +90,8 @@ class TodoItem extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleTodo: id => dispatch(toggleTodo(id)),
-    deleteTodo: id => dispatch(deleteTodo(id)),
+    toggleTodo: todoItem => dispatch(toggleTodo(todoItem)),
+    deleteTodo: todoItem => dispatch(deleteTodo(todoItem)),
     editTodo: (content, id) => dispatch(editTodo(content, id))
   };
 };
