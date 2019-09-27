@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 
+import TodoContextProvider from "../contexts/TodoContext";
+
 class App extends Component {
   renderTodoList(todos) {
     const { activeFilter } = this.props.activeFilter;
@@ -31,6 +33,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.props);
     const { todos, user, signOut, signInWithGithub } = this.props;
     const { length: totalTodosCount } = this.props.todos;
     const { activeFilter } = this.props.activeFilter;
@@ -45,31 +48,32 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        <header>
-          <NavBar
-            user={user}
-            signOut={signOut}
-            signInWithGithub={signInWithGithub}
-          />
-          <h1 style={{ textAlign: "center" }}>todo</h1>
-        </header>
-        <div className="container">
-          <AddTodo todos={todos} activeTodoCount={activeTodoCount} />
-          {filteredTodos}
-          <Footer
-            activeFilter={activeFilter}
-            completedTodoCount={completedTodoCount}
-            filteredTodosCount={filteredTodosCount}
-            totalTodosCount={totalTodosCount}
-          />
-        </div>
+        <TodoContextProvider>
+          <header>
+            <NavBar
+              user={user}
+              signOut={signOut}
+              signInWithGithub={signInWithGithub}
+            />
+            <h1 style={{ textAlign: "center" }}>todo</h1>
+          </header>
+          <div className="container">
+            <AddTodo todos={todos} activeTodoCount={activeTodoCount} />
+            {filteredTodos}
+            <Footer
+              activeFilter={activeFilter}
+              completedTodoCount={completedTodoCount}
+              filteredTodosCount={filteredTodosCount}
+              totalTodosCount={totalTodosCount}
+            />
+          </div>
+        </TodoContextProvider>
       </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     todos: state.firestore.ordered.todos || [],
     activeFilter: state.activeFilter
