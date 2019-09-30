@@ -2,18 +2,21 @@ import React, { useContext, useState, useEffect } from "react";
 
 import { TodoContext } from "./../contexts/TodoContext";
 
+const ENTER_KEY = 13;
+const ESCAPE_KEY = 27;
+
 const Todo = ({ todo }) => {
-  const { dispatch } = useContext(TodoContext);
+  const { dispatchTodos } = useContext(TodoContext);
   const [editing, setEditing] = useState(false);
   const [content, setContent] = useState("");
 
   useEffect(() => {
     setContent(todo.content);
-  }, []);
+  }, [todo.content]);
 
-  handleEditTodoKeyDown = event => {
+  const handleEditTodoKeyDown = event => {
     if (event.keyCode === ENTER_KEY && content !== "") {
-      dispatch({ type: "EDIT_TODO", id: todo.id });
+      dispatchTodos({ type: "EDIT_TODO", todo });
       setEditing(false);
     } else if (event.keyCode === ESCAPE_KEY) {
       setContent(todo.content);
@@ -21,26 +24,26 @@ const Todo = ({ todo }) => {
     }
   };
 
-  handleEditTodoUnfocus = () => {
+  const handleEditTodoUnfocus = () => {
     setContent(todo.content);
     setEditing(false);
   };
 
-  handleToggleEdit = () => {
+  const handleToggleEdit = () => {
     setEditing(!editing);
   };
 
-  renderInput = () => {
+  const renderInput = () => {
     if (editing) {
       return (
         <input
           className={todo.completed ? "input-completed input-edit" : ""}
           type="text"
           value={content}
-          onBlur={() => handleEditTodoUnfocus()}
-          onChange={() => handleChange()}
-          onKeyDown={() => handleEditTodoKeyDown()}
-          onFocus={() => handleEditTodofocus()}
+          onBlur={handleEditTodoUnfocus}
+          onChange={handleChange}
+          onKeyDown={handleEditTodoKeyDown}
+          //   onFocus={() => handleEditTodofocus()}
           autoFocus
         />
       );
@@ -48,22 +51,22 @@ const Todo = ({ todo }) => {
       return (
         <label
           className={todo.completed ? "input-completed" : ""}
-          onDoubleClick={() => handleToggleEdit()}
+          onDoubleClick={handleToggleEdit}
         >
-          {todo.content}
+          {content}
         </label>
       );
     }
   };
 
-  handleChange = event => {
+  const handleChange = event => {
     setContent(event.target.value);
   };
 
   return (
     <div className={`input-container ${editing ? "edit" : ""}`}>
       <i
-        onClick={() => dispatch({ type: "TOGGLE_TODO", id: todo.id })}
+        onClick={() => dispatchTodos({ type: "TOGGLE_TODO", id: todo.id })}
         className={`far ${
           todo.completed ? "fa-check-circle" : "fa-circle"
         } fa-w-14 fa-2x`}
@@ -71,7 +74,7 @@ const Todo = ({ todo }) => {
       {renderInput()}
       <i
         className="fas fa-times fa-w-14 fa-2x destroy"
-        onClick={() => dispatch({ type: "REMOVE_TODO", id: todo.id })}
+        onClick={() => dispatchTodos({ type: "REMOVE_TODO", id: todo.id })}
       />
     </div>
   );

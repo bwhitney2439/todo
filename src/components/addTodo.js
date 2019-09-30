@@ -1,38 +1,18 @@
-import React from "react";
-import { connect } from "react-redux";
-import { addTodo, toggleAllComplete } from "../actions/index";
-import { firestoreConnect } from "react-redux-firebase";
-import { compose } from "redux";
+import React, { useState, useContext } from "react";
+import { TodoContext } from "../contexts/TodoContext";
 
 const ENTER_KEY = 13;
 
-class AddTodo extends React.Component {
-  state = { content: "" };
+const AddTodoItem = () => {
+  const [content, setContent] = useState("");
+  const { todos, dispatchTodos } = useContext(TodoContext);
 
-  handleNewTodoKeyDown = event => {
-    const { addTodo } = this.props;
-    const { content } = this.state;
-    if (event.keyCode === ENTER_KEY && content !== "") {
-      event.preventDefault();
+  const activeTodoCount = todos.reduce((accum, todo) => {
+    return todo.completed ? accum : accum + 1;
+  }, 0);
 
-      addTodo(content);
-
-      this.setState({ content: "" });
-    }
-  };
-
-  handleToggleAllComplete = event => {
-    const { toggleAllComplete } = this.props;
-    toggleAllComplete(event.target.checked);
-  };
-
-  handleChange = event => {
-    this.setState({ content: event.target.value });
-  };
-
-  renderSearchIcon() {
-    const { length: count } = this.props.todos;
-    const { activeTodoCount } = this.props;
+  const renderSearchIcon = () => {
+    const { length: count } = todos;
 
     if (!count) {
       return <i className="fas fa-chevron-down fa-w-14 fa-2x hide-input" />;
@@ -43,7 +23,7 @@ class AddTodo extends React.Component {
             className="addtodo-input-checkbox"
             type="checkbox"
             checked={activeTodoCount === 0}
-            onChange={this.handleToggleAllComplete}
+            onChange={handleToggleAllComplete}
           />
           <div className="state p-off">
             <i className="fas fa-chevron-down fa-w-14 fa-2x"></i>
@@ -54,36 +34,39 @@ class AddTodo extends React.Component {
         </div>
       );
     }
-  }
-
-  render() {
-    return (
-      <div className="addtodo-input-container">
-        {this.renderSearchIcon()}
-        <input
-          type="text"
-          placeholder="what needs to be done?"
-          value={this.state.content}
-          onChange={this.handleChange}
-          onKeyDown={this.handleNewTodoKeyDown}
-          autoFocus={true}
-        />
-      </div>
-    );
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleAllComplete: toggleAll => dispatch(toggleAllComplete(toggleAll)),
-    addTodo: content => dispatch(addTodo(content))
   };
+
+  const handleNewTodoKeyDown = event => {
+    if (event.keyCode === ENTER_KEY && content !== "") {
+      event.preventDefault();
+
+      dispatchTodos({ type: "ADD_TODO", content });
+
+      setContent("");
+    }
+  };
+
+  const handleToggleAllComplete = event => {
+    dispatchTodos({ type: "TOGGLE_ALL", toggleAll: event.target.checked });
+  };
+
+  const handleChange = event => {
+    setContent(event.target.value);
+  };
+
+  return (
+    <div className="addtodo-input-container">
+      {renderSearchIcon()}
+      <input
+        type="text"
+        placeholder="what needs to be done?"
+        value={content}
+        onChange={handleChange}
+        onKeyDown={handleNewTodoKeyDown}
+        autoFocus={true}
+      />
+    </div>
+  );
 };
 
-export default compose(
-  connect(
-    null,
-    mapDispatchToProps
-  ),
-  firestoreConnect([{ collection: "todos" }])
-)(AddTodo);
+export default AddTodoItem;

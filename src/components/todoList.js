@@ -1,17 +1,28 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useContext } from "react";
+import { TodoContext } from "../contexts/TodoContext";
 import Todo from "./todo";
-import { TodoContext } from "./../contexts/TodoContext";
 
-const todoList = () => {
-  const { todos } = useContext(TodoContext);
+const TodoList = () => {
+  const { todos, activeFilter } = useContext(TodoContext);
+  const filteredTodos = todos.filter(todo => {
+    switch (activeFilter) {
+      case "Active":
+        return !todo.completed;
+      case "Completed":
+        return todo.completed;
+      default:
+        return true;
+    }
+  });
 
-  return todos.length ? (
-    todos.map(todo => {
-      return <Todo key={todo.id} todo={todo} />;
-    })
-  ) : (
-    <div className="empty">No Books to read. Hello free time :-)</div>
+  return (
+    <React.Fragment>
+      {filteredTodos.map(todo => (
+        <Todo key={todo.id} todo={todo} />
+      ))}
+    </React.Fragment>
   );
 };
 
-export default todoList;
+export default TodoList;

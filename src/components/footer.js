@@ -1,33 +1,40 @@
-import React from "react";
-import { connect } from "react-redux";
-import { filterTodos, clearTodoItems } from "../actions/index";
+import React, { useContext } from "react";
+// import { connect } from "react-redux";
+// import { filterTodos, clearTodoItems } from "../actions/index";
+import { TodoContext } from "../contexts/TodoContext";
 
-function footer({
-  dispatch,
-  activeFilter,
-  completedTodoCount,
-  filteredTodosCount,
-  totalTodosCount
-}) {
-  return totalTodosCount ? (
+const Footer = () => {
+  const { todos, dispatchTodos, activeFilter, dispatchFilter } = useContext(
+    TodoContext
+  );
+
+  const activeTodoCount = todos.reduce((accum, todo) => {
+    return todo.completed ? accum : accum + 1;
+  }, 0);
+
+  const completedTodoCount = todos.length - activeTodoCount;
+
+  console.log(activeFilter);
+
+  return todos.length ? (
     <div className="filter">
-      <label>{filteredTodosCount} items</label>
+      <label>{todos.length} items</label>
       <div className="filter-button-container">
         <button
           className={activeFilter === "All" ? "selected" : ""}
-          onClick={() => dispatch(filterTodos("All"))}
+          onClick={() => dispatchFilter({ type: "ALL" })}
         >
           All
         </button>
         <button
           className={activeFilter === "Active" ? "selected" : ""}
-          onClick={() => dispatch(filterTodos("Active"))}
+          onClick={() => dispatchFilter({ type: "ACTIVE" })}
         >
           Active
         </button>
         <button
           className={activeFilter === "Completed" ? "selected" : ""}
-          onClick={() => dispatch(filterTodos("Completed"))}
+          onClick={() => dispatchFilter({ type: "COMPLETED" })}
         >
           Completed
         </button>
@@ -36,12 +43,12 @@ function footer({
         className={
           completedTodoCount ? "clear-completed" : "hide-clear-completed"
         }
-        onClick={() => dispatch(clearTodoItems())}
+        onClick={() => dispatchTodos({ type: "CLEAR_TODOS" })}
       >
         Clear Completed
       </label>
     </div>
   ) : null;
-}
+};
 
-export default connect()(footer);
+export default Footer;

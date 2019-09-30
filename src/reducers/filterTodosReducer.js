@@ -1,15 +1,12 @@
-const INITIAL_STATE = { activeFilter: "All" };
-
-const filterTodosReducer = (state = INITIAL_STATE, action) => {
+export const filterTodosReducer = (state, action) => {
   switch (action.type) {
-    case "FILTER_TODOS":
-      return {
-        ...state,
-        activeFilter: action.activeFilter
-      };
+    case "ALL":
+      return "All";
+    case "ACTIVE":
+      return "Active";
+    case "COMPLETED":
+      return "Completed";
     default:
       return state;
   }
 };
-
-export default filterTodosReducer;
