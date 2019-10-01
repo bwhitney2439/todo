@@ -43,7 +43,6 @@ const Todo = ({ todo }) => {
           onBlur={handleEditTodoUnfocus}
           onChange={handleChange}
           onKeyDown={handleEditTodoKeyDown}
-          //   onFocus={() => handleEditTodofocus()}
           autoFocus
         />
       );
