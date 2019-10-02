@@ -4,7 +4,8 @@ import { TodoContext } from "../contexts/TodoContext";
 import Todo from "./todo";
 
 const TodoList = () => {
-  const { todos, activeFilter } = useContext(TodoContext);
+  const { todos, activeFilter, firebase } = useContext(TodoContext);
+  console.log(firebase);
   const filteredTodos = todos.filter(todo => {
     switch (activeFilter) {
       case "Active":
