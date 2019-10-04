@@ -1,85 +1,28 @@
 import React, { Component } from "react";
-import AddTodo from "./addTodo";
-import TodoItem from "./todoItem";
-import NavBar from "./navBar";
-import Footer from "./footer";
-import { connect } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
-import { compose } from "redux";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import * as ROUTES from "../constants/routes";
 
-import TodoContextProvider from "../contexts/TodoContext";
+import LandingPage from "../components/landingPage";
 
-class App extends Component {
-  renderTodoList(todos) {
-    const { activeFilter } = this.props.activeFilter;
-    const filteredTodos = todos.filter(todo => {
-      switch (activeFilter) {
-        case "Active":
-          return !todo.completed;
-        case "Completed":
-          return todo.completed;
-        default:
-          return true;
-      }
-    });
-    const renderedTodos = filteredTodos.map(todoItem => {
-      return <TodoItem key={todoItem.id} todoItem={todoItem} />;
-    });
+const App = () => (
+  <Router>
+    <div>
+      <NavBar />
 
-    return {
-      filteredTodos: renderedTodos,
-      filteredTodosCount: renderedTodos.length
-    };
-  }
+      <hr />
 
-  render() {
-    console.log(this.props);
-    const { todos, user, signOut, signInWithGithub } = this.props;
-    const { length: totalTodosCount } = this.props.todos;
-    const { activeFilter } = this.props.activeFilter;
+      <Route exact path={ROUTES.LANDING} component={LandingPage}></Route>
+      <Route path={ROUTES.SIGN_UP} component={SignUpPage}></Route>
+      <Route path={ROUTES.SIGN_IN} component={SignInPage}></Route>
+      <Route
+        path={ROUTES.PASSWORD_FORGET}
+        component={PasswordForgetPage}
+      ></Route>
+      <Route path={ROUTES.HOME} component={HomePage}></Route>
+      <Route path={ROUTES.ACCOUNT} component={AccountPage}></Route>
+      <Route path={ROUTES.ADMIN} component={AdminPage}></Route>
+    </div>
+  </Router>
+);
 
-    const activeTodoCount = todos.reduce((accum, todo) => {
-      return todo.completed ? accum : accum + 1;
-    }, 0);
-
-    const completedTodoCount = totalTodosCount - activeTodoCount;
-
-    const { filteredTodos, filteredTodosCount } = this.renderTodoList(todos);
-
-    return (
-      <React.Fragment>
-        <TodoContextProvider>
-          <header>
-            <NavBar
-              user={user}
-              signOut={signOut}
-              signInWithGithub={signInWithGithub}
-            />
-            <h1 style={{ textAlign: "center" }}>todo</h1>
-          </header>
-          <div className="container">
-            <AddTodo todos={todos} activeTodoCount={activeTodoCount} />
-            {filteredTodos}
-            <Footer
-              activeFilter={activeFilter}
-              completedTodoCount={completedTodoCount}
-              filteredTodosCount={filteredTodosCount}
-              totalTodosCount={totalTodosCount}
-            />
-          </div>
-        </TodoContextProvider>
-      </React.Fragment>
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    todos: state.firestore.ordered.todos || [],
-    activeFilter: state.activeFilter
-  };
-};
-export default compose(
-  connect(mapStateToProps),
-  firestoreConnect([{ collection: "todos" }])
-)(App);
+export default App;

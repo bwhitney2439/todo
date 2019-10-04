@@ -47,9 +47,10 @@ class Firebase {
 
   users = () => this.db.collection("users");
 
-  // user = uid => this.db.ref(`users/${uid}`);
+  // **** Todo API ****
 
-  // users = () => this.db.ref("users");
+  todo = uid => this.db.doc(`todos/${uid}`);
+  todos = () => this.db.ref("toods");
 }
 
-export default Firebase;
+export default new Firebase();
