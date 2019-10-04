@@ -9,8 +9,8 @@ const TodoList = props => {
 
   useEffect(() => {
     const unsubscribe = firebase.todos().onSnapshot(snapshot => {
-      let newTodos = [];
-      snapshot.forEach(doc => {});
+      let todos = [];
+      snapshot.forEach(doc => todos.push({ ...doc.data, uid: doc.id }));
     });
   }, []);
 
