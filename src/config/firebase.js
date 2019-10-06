@@ -45,7 +45,7 @@ export class Firebase {
 
   user = uid => this.db.doc(`users/${uid}`);
 
-  users = () => this.db.collection("users");
+  todos = () => this.db.collection("Todos");
 
   // user = uid => this.db.ref(`users/${uid}`);
 
