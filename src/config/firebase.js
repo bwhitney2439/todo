@@ -17,7 +17,7 @@ const firebaseConfig = {
 // firebase.initializeApp(firebaseConfig);
 // firebase.firestore();
 
-class Firebase {
+export class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
 
@@ -51,5 +51,3 @@ class Firebase {
 
   // users = () => this.db.ref("users");
 }
-
-export default new Firebase();
