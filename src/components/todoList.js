@@ -1,11 +1,18 @@
 import React from "react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TodoContext } from "../contexts/TodoContext";
 import Todo from "./todo";
 
 const TodoList = () => {
   const { todos, activeFilter, firebase } = useContext(TodoContext);
-  console.log(firebase);
+  const [currentTodos, setCurrentTodos] = useState([]);
+
+  useEffect(() => {
+    const unconditional = firebase.users().onSnapshot(snapshot => {
+      console.log(snapshot);
+    });
+  }, []);
+
   const filteredTodos = todos.filter(todo => {
     switch (activeFilter) {
       case "Active":

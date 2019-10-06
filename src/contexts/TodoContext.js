@@ -6,18 +6,21 @@ import Firebase from "../config/firebase";
 
 export const TodoContext = createContext();
 
-const TodoContextProvider = props => {
+const TodoContextProvider = ({ children }) => {
   const [todos, dispatchTodos] = useReducer(todoReducer, []);
   const [activeFilter, dispatchFilter] = useReducer(filterTodosReducer, "All");
-  //   const firebase = new Firebase();
 
   return (
     <TodoContext.Provider
-      value={
-        (new Firebase(), { todos, dispatchTodos, activeFilter, dispatchFilter })
-      }
+      value={{
+        firebase: Firebase,
+        todos,
+        dispatchTodos,
+        activeFilter,
+        dispatchFilter
+      }}
     >
-      {props.children}
+      {children}
     </TodoContext.Provider>
   );
 };
