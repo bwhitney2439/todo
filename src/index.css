@@ -1,0 +1,152 @@
+
+.container {
+    width: 550px;
+    max-width: 100%;
+    text-align: center;
+    margin: auto;
+    font-family: "Lucida Sans Unicode";
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  }
+  
+  .pretty {
+    margin-right: 0;
+  }
+  
+  .input-container {
+    padding: 10px;
+    display: flex;
+    border: 1px solid lightgrey;
+    margin: 0;
+    align-items: center;
+  }
+  .input-container input,
+  .input-container label {
+    border: none;
+    width: 100%;
+    outline: none;
+    font-size: 24px;
+    margin-left: 10px;
+    font-family: "Lucida Sans Unicode";
+    text-align: left;
+    word-break: break-all;
+    transition: color 0.4s;
+  }
+  
+  .input-container i {
+    padding: 10px;
+    opacity: 0.5;
+    min-width: 5%;
+  }
+  
+  .input-container .destroy {
+    opacity: 0;
+    color: #cc9a9a;
+    transition: color 0.2s ease-out;
+  }
+  
+  .input-container .destroy:hover {
+    color: #af5b5e;
+  }
+  
+  .input-container:hover .destroy {
+    opacity: 1;
+  }
+  
+  .input-completed {
+    text-decoration: line-through;
+    color: #d9d9d9;
+  }
+  
+  .input-container.edit {
+    padding: 10px;
+    display: flex;
+    border: 2px solid black;
+    margin: 0;
+    align-items: center;
+    border: 1px solid #999;
+    box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+  }
+  
+  .input-container.edit input {
+    text-decoration: none;
+    color: initial;
+  }
+  
+  .input-container.edit i {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .input-container.edit .destroy {
+    pointer-events: none;
+    opacity: 0;
+  }
+  
+  .filter {
+    border: 1px solid lightgrey;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6,
+      0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6,
+      0 17px 2px -6px rgba(0, 0, 0, 0.2);
+    opacity: 0.7;
+  }
+  .filter label {
+    font-size: 12px;
+    padding: 8px;
+    color: inherit;
+  }
+  .filter-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .filter-button-container button {
+    background-color: white;
+    color: black;
+    margin: 2px;
+    border: 1px solid transparent;
+    font-size: 12px;
+    transition: border 0.5s;
+  }
+  
+  .filter-button-container button.selected {
+    border: 1px solid grey;
+    border-radius: 3px;
+  }
+  
+  .filter-button-container button:focus {
+    outline: 0;
+  }
+  
+  .filter-button-container button:hover {
+    border: 1px solid grey;
+    border-radius: 3px;
+  }
+  
+  .clear-completed:hover {
+    text-decoration: underline;
+  }
+  
+  .hide-clear-completed {
+    pointer-events: none;
+    opacity: 0;
+  }
+  
+  .navbar-container {
+    border: 1px solid lightgray;
+  }
+  .navbar {
+    max-width: 60%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+  }
+  
+  .navbar-app {
+    justify-self: right;
+  }
