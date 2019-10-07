@@ -1,11 +1,10 @@
 import React from "react";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { TodoContext } from "../contexts/TodoContext";
 import Todo from "./todo";
 
 const TodoList = () => {
   const { todos, activeFilter, firebase } = useContext(TodoContext);
-  const [currentTodos, setCurrentTodos] = useState([]);
 
   const filteredTodos = todos.filter(todo => {
     switch (activeFilter) {

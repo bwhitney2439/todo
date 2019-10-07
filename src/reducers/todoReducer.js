@@ -2,6 +2,8 @@ import uuid from "uuid/v1";
 
 export const todoReducer = (state, action) => {
   switch (action.type) {
+    case "INITIAL":
+      return [...action.data];
     case "ADD_TODO":
       return [
         ...state,

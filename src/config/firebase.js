@@ -1,23 +1,9 @@
 import app from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import firebaseConfig from "./config";
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyACWFnu6HWHoCXSYoOnVSEftZLYWua5lDY",
-  authDomain: "todoapp-243e7.firebaseapp.com",
-  databaseURL: "https://todoapp-243e7.firebaseio.com",
-  projectId: "todoapp-243e7",
-  storageBucket: "todoapp-243e7.appspot.com",
-  messagingSenderId: "681169528526",
-  appId: "1:681169528526:web:617b27820300e4e8"
-};
-
-// Initialize Firebase
-// firebase.initializeApp(firebaseConfig);
-// firebase.firestore();
-
-export class Firebase {
+class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
 
@@ -29,26 +15,40 @@ export class Firebase {
 
   // *** Auth API ***
 
-  doCreateUserWithEmailAndPassword = (email, password) =>
-    this.auth.createUserWithEmailAndPassword(email, password);
+  doCreateUserWithEmailAndPassword = async (email, password) => {
+    const newUser = await this.auth.createUserWithEmailAndPassword(
+      email,
+      password
+    );
 
-  doSignInWithEmailAndPassword = (email, password) =>
-    this.auth.signInWithEmailAndPassword(email, password);
+    return await newUser.user.updateProfile({
+      displayName: email
+    });
+  };
 
-  doSignOut = () => this.auth.signOut();
+  doSignInWithEmailAndPassword = async (email, password) =>
+    await this.auth.signInWithEmailAndPassword(email, password);
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+  doSignOut = async () => await this.auth.signOut();
 
-  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+  doPasswordReset = async email =>
+    await this.auth.sendPasswordResetEmail(email);
+
+  doPasswordUpdate = async password =>
+    await this.auth.currentUser.updatePassword(password);
 
   // *** User API ***
 
   user = uid => this.db.doc(`users/${uid}`);
 
-  todos = () => this.db.collection("Todos");
+  users = () => this.db.collection("Users");
 
   // **** Todo API ****
 
   todo = uid => this.db.doc(`todos/${uid}`);
-  todos = () => this.db.ref("toods");
+  todos = () => this.db.collection("Todos");
 }
+
+const firebase = new Firebase();
+
+export default firebase;
