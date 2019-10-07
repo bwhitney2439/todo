@@ -7,7 +7,7 @@ export const todoReducer = (state, action) => {
         ...state,
         {
           content: action.content,
-          id: uuid(),
+          id: action.id || uuid(),
           completed: false
         }
       ];

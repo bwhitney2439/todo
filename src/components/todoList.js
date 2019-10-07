@@ -1,18 +1,11 @@
 import React from "react";
-import { useContext, useEffect } from "react";
+import { useContext, useState } from "react";
 import { TodoContext } from "../contexts/TodoContext";
 import Todo from "./todo";
 
-const TodoList = props => {
-  const { todos, activeFilter } = useContext(TodoContext);
-  const { firebase } = useContext(TodoContext);
-
-  useEffect(() => {
-    const unsubscribe = firebase.todos().onSnapshot(snapshot => {
-      let todos = [];
-      snapshot.forEach(doc => todos.push({ ...doc.data, uid: doc.id }));
-    });
-  }, []);
+const TodoList = () => {
+  const { todos, activeFilter, firebase } = useContext(TodoContext);
+  const [currentTodos, setCurrentTodos] = useState([]);
 
   const filteredTodos = todos.filter(todo => {
     switch (activeFilter) {

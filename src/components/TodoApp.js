@@ -4,12 +4,14 @@ import AddTodo from "./addTodo";
 import NavBar from "./navBar";
 import Footer from "./footer";
 import TodoList from "../components/todoList";
-
+import { Firebase } from "../config/firebase";
 import TodoContextProvider from "../contexts/TodoContext";
+
+const firebase = new Firebase();
 
 const TodoApp = () => {
   return (
-    <TodoContextProvider>
+    <TodoContextProvider firebase={firebase}>
       <header>
         <NavBar />
         <h1 style={{ textAlign: "center" }}>todo</h1>

@@ -17,7 +17,7 @@ const firebaseConfig = {
 // firebase.initializeApp(firebaseConfig);
 // firebase.firestore();
 
-class Firebase {
+export class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
 
@@ -45,12 +45,10 @@ class Firebase {
 
   user = uid => this.db.doc(`users/${uid}`);
 
-  users = () => this.db.collection("users");
+  todos = () => this.db.collection("Todos");
 
   // **** Todo API ****
 
   todo = uid => this.db.doc(`todos/${uid}`);
   todos = () => this.db.ref("toods");
 }
-
-export default new Firebase();

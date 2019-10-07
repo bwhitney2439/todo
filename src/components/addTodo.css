@@ -1,0 +1,38 @@
+.addtodo-input-container .addtodotoggle {
+    opacity: 1;
+}
+
+.addtodo-input-container .hide-input {
+    opacity: 0;
+}
+
+.addtodo-input-container {
+    padding: 10px;
+    display: flex;
+    border: 1px solid lightgrey;
+    margin: 0;
+    align-items: center;
+}
+
+.addtodo-input-checkbox {
+    margin-left: 0px;
+}
+
+.addtodo-input-container i {
+    padding: 10px;
+    opacity: 0.5;
+    min-width: 5%;
+}
+
+.addtodo-input-container input,
+.addtodo-input-container label {
+    border: none;
+    width: 100%;
+    outline: none;
+    font-size: 24px;
+    margin-left: 10px;
+    font-family: "Lucida Sans Unicode";
+    text-align: left;
+    word-break: break-all;
+    transition: color 0.4s;
+}
