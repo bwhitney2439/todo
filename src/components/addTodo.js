@@ -6,7 +6,7 @@ const ENTER_KEY = 13;
 
 const AddTodoItem = () => {
   const [content, setContent] = useState("");
-  const { todos, dispatchTodos } = useContext(TodoContext);
+  const { todos, addTodo, toggleAllTodos } = useContext(TodoContext);
 
   const activeTodoCount = todos.reduce((accum, todo) => {
     return todo.completed ? accum : accum + 1;
@@ -41,14 +41,14 @@ const AddTodoItem = () => {
     if (event.keyCode === ENTER_KEY && content !== "") {
       event.preventDefault();
 
-      dispatchTodos({ type: "ADD_TODO", content });
+      addTodo(content);
 
       setContent("");
     }
   };
 
   const handleToggleAllComplete = event => {
-    dispatchTodos({ type: "TOGGLE_ALL", toggleAll: event.target.checked });
+    toggleAllTodos(event.target.checked);
   };
 
   const handleChange = event => {

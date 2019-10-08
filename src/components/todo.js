@@ -6,7 +6,7 @@ const ENTER_KEY = 13;
 const ESCAPE_KEY = 27;
 
 const Todo = ({ todo }) => {
-  const { dispatchTodos } = useContext(TodoContext);
+  const { toggleTodo, editTodo, deleteTodo } = useContext(TodoContext);
   const [editing, setEditing] = useState(false);
   const [content, setContent] = useState("");
 
@@ -16,7 +16,7 @@ const Todo = ({ todo }) => {
 
   const handleEditTodoKeyDown = event => {
     if (event.keyCode === ENTER_KEY && content !== "") {
-      dispatchTodos({ type: "EDIT_TODO", todo });
+      editTodo(todo.id, content);
       setEditing(false);
     } else if (event.keyCode === ESCAPE_KEY) {
       setContent(todo.content);
@@ -31,6 +31,14 @@ const Todo = ({ todo }) => {
 
   const handleToggleEdit = () => {
     setEditing(!editing);
+  };
+
+  const handleToggle = todo => {
+    toggleTodo(todo);
+  };
+
+  const handleDeleteTodo = id => {
+    deleteTodo(id);
   };
 
   const renderInput = () => {
@@ -65,7 +73,7 @@ const Todo = ({ todo }) => {
   return (
     <div className={`input-container ${editing ? "edit" : ""}`}>
       <i
-        onClick={() => dispatchTodos({ type: "TOGGLE_TODO", id: todo.id })}
+        onClick={() => handleToggle(todo)}
         className={`far ${
           todo.completed ? "fa-check-circle" : "fa-circle"
         } fa-w-14 fa-2x`}
@@ -73,7 +81,7 @@ const Todo = ({ todo }) => {
       {renderInput()}
       <i
         className="fas fa-times fa-w-14 fa-2x destroy"
-        onClick={() => dispatchTodos({ type: "REMOVE_TODO", id: todo.id })}
+        onClick={() => handleDeleteTodo(todo.id)}
       />
     </div>
   );

@@ -19,11 +19,38 @@ const TodoContextProvider = ({ children }) => {
     });
   }, []);
 
+  const addTodo = content => {
+    firebase.todos().add({ completed: false, content });
+  };
+
+  const toggleTodo = todo => {
+    firebase.todo(todo.id).update({ completed: !todo.completed });
+  };
+
+  const toggleAllTodos = toggleAll => {
+    todos.forEach(todo => {
+      firebase.todo(todo.id).update({ completed: toggleAll });
+    });
+  };
+
+  const editTodo = (id, content) => {
+    firebase.todo(id).update({ content: content });
+  };
+
+  const deleteTodo = id => {
+    firebase.todo(id).delete();
+  };
+
   return (
     <TodoContext.Provider
       value={{
         firebase,
         todos,
+        addTodo,
+        toggleTodo,
+        toggleAllTodos,
+        editTodo,
+        deleteTodo,
         dispatchTodos,
         activeFilter,
         dispatchFilter

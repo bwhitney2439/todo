@@ -45,7 +45,7 @@ class Firebase {
 
   // **** Todo API ****
 
-  todo = uid => this.db.doc(`todos/${uid}`);
+  todo = id => this.db.collection("Todos").doc(id);
   todos = () => this.db.collection("Todos");
 }
 

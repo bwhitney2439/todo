@@ -1,5 +1,3 @@
-import uuid from "uuid/v1";
-
 export const todoReducer = (state, action) => {
   switch (action.type) {
     case "INITIAL":
@@ -9,7 +7,7 @@ export const todoReducer = (state, action) => {
         ...state,
         {
           content: action.content,
-          id: action.id || uuid(),
+          id: action.id,
           completed: false
         }
       ];
