@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { TodoContext } from "../contexts/TodoContext";
 
 const Footer = () => {
-  const { todos, dispatchTodos, activeFilter, dispatchFilter } = useContext(
+  const { todos, activeFilter, dispatchFilter, clearTodos } = useContext(
     TodoContext
   );
 
@@ -15,6 +15,10 @@ const Footer = () => {
   const completedTodoCount = todos.length - activeTodoCount;
 
   console.log(activeFilter);
+
+  const handleClearTodos = () => {
+    clearTodos();
+  };
 
   return todos.length ? (
     <div className="filter">
@@ -43,7 +47,7 @@ const Footer = () => {
         className={
           completedTodoCount ? "clear-completed" : "hide-clear-completed"
         }
-        onClick={() => dispatchTodos({ type: "CLEAR_TODOS" })}
+        onClick={handleClearTodos}
       >
         Clear Completed
       </label>

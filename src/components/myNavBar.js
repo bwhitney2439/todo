@@ -1,6 +1,7 @@
 import React from "react";
 import { GithubLoginButton } from "react-social-login-buttons";
-const NavBar = ({ user, signOut, signInWithGithub }) => {
+
+const myNavBar = ({ user, signOut, signInWithGithub }) => {
   return (
     <div className="navbar-container">
       <div className="navbar">
@@ -21,4 +22,4 @@ const NavBar = ({ user, signOut, signInWithGithub }) => {
   );
 };
 
-export default NavBar;
+export default myNavBar;
