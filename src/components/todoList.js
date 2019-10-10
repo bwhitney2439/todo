@@ -1,10 +1,10 @@
 import React from "react";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { TodoContext } from "../contexts/TodoContext";
 import Todo from "./todo";
 
 const TodoList = () => {
-  const { todos, activeFilter, authUser } = useContext(TodoContext);
+  const { todos, activeFilter } = useContext(TodoContext);
 
   const filteredTodos = todos.filter(todo => {
     switch (activeFilter) {
@@ -17,10 +17,6 @@ const TodoList = () => {
     }
   });
 
-  useEffect(() => {
-    if (authUser) {
-    }
-  }, []);
   return (
     <React.Fragment>
       {filteredTodos.map(todo => (

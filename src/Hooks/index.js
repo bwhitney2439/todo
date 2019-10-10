@@ -2,28 +2,34 @@ import { useState, useEffect } from "react";
 
 import firebase from "../config/firebase";
 
-export const useTodos = authUser => {
+export const useTodos = () => {
+  const [authUser, setAuthUser] = useState(null);
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    firebase
-      .todos()
-      .where("userID", "==", authUser.uid)
-      .onSnapshot(snapshot => {
-        const data = snapshot.docs.map(doc => {
-          return { id: doc.id, ...doc.data() };
-        });
+    const unregisterAuthObserver = firebase.auth.onAuthStateChanged(user => {
+      if (user) {
+        firebase
+          .todos()
+          .where("userId", "==", user.uid)
+          .onSnapshot(snapshot => {
+            const data = snapshot.docs.map(doc => {
+              return { id: doc.id, ...doc.data() };
+            });
+            setTodos(data);
+          });
+      } else {
+        setTodos([]);
+      }
+      setAuthUser(user);
+      console.log(authUser);
+    });
 
-        setTodos(data);
-      });
-  }, []);
-
-  const getTodos = authUser => {
-    firebase.user(authUser.uid);
-  };
+    return () => unregisterAuthObserver();
+  }, [authUser]);
 
   const addTodo = content => {
-    firebase.todos().add({ completed: false, content });
+    firebase.todos().add({ completed: false, content, userId: authUser.uid });
   };
 
   const toggleTodo = todo => {
@@ -53,27 +59,13 @@ export const useTodos = authUser => {
   };
 
   return {
-    todos,
+    authUser,
     addTodo,
+    todos,
     toggleTodo,
     toggleAllTodos,
     editTodo,
     deleteTodo,
     clearTodos
   };
-};
-
-export const useAuth = () => {
-  const [authUser, setAuthUser] = useState(null);
-
-  useEffect(() => {
-    const unregisterAuthObserver = firebase.auth.onAuthStateChanged(user => {
-      setAuthUser(!!user);
-      console.log(user);
-    });
-
-    return () => unregisterAuthObserver();
-  }, []);
-
-  return authUser;
 };
