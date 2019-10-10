@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from "react";
 
 import { filterTodosReducer } from "../reducers/filterTodosReducer";
 import firebase from "../config/firebase";
-import { useTodos } from "../Hooks";
+import { useTodos, useAuth } from "../Hooks";
 export const TodoContext = createContext();
 
 const TodoContextProvider = ({ children }) => {
@@ -17,11 +17,14 @@ const TodoContextProvider = ({ children }) => {
     clearTodos
   } = useTodos();
 
+  const isSignedIn = useAuth();
+
   return (
     <TodoContext.Provider
       value={{
         firebase,
         todos,
+        isSignedIn,
         addTodo,
         toggleTodo,
         toggleAllTodos,

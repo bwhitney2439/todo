@@ -55,3 +55,17 @@ export const useTodos = () => {
     clearTodos
   };
 };
+
+export const useAuth = () => {
+  const [isSignedIn, setIsSignedIn] = useState(null);
+
+  useEffect(() => {
+    const unregisterAuthObserver = firebase.auth.onAuthStateChanged(user => {
+      setIsSignedIn(!!user);
+    });
+
+    return () => unregisterAuthObserver();
+  }, [isSignedIn]);
+
+  return isSignedIn;
+};
