@@ -2,19 +2,18 @@ import React, { useContext } from "react";
 // import { connect } from "react-redux";
 // import { filterTodos, clearTodoItems } from "../actions/index";
 import { TodoContext } from "../contexts/TodoContext";
+import { useTodos } from "../Hooks";
 
 const Footer = () => {
-  const { todos, activeFilter, dispatchFilter, clearTodos } = useContext(
-    TodoContext
-  );
+  const { activeFilter, dispatchFilter, authUser } = useContext(TodoContext);
+
+  const { todos, clearTodos } = useTodos(authUser);
 
   const activeTodoCount = todos.reduce((accum, todo) => {
     return todo.completed ? accum : accum + 1;
   }, 0);
 
   const completedTodoCount = todos.length - activeTodoCount;
-
-  console.log(activeFilter);
 
   const handleClearTodos = () => {
     clearTodos();

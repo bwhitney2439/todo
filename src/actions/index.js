@@ -19,7 +19,6 @@ export const addTodo = content => {
 export const toggleTodo = todoitem => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-    console.log(todoitem);
     firestore
       .collection("todos")
       .doc(todoitem.id)

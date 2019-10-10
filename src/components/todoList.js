@@ -2,9 +2,12 @@ import React from "react";
 import { useContext } from "react";
 import { TodoContext } from "../contexts/TodoContext";
 import Todo from "./todo";
+import { useTodos } from "../Hooks";
 
 const TodoList = () => {
-  const { todos, activeFilter } = useContext(TodoContext);
+  const { authUser, activeFilter } = useContext(TodoContext);
+
+  const { todos } = useTodos(authUser);
 
   const filteredTodos = todos.filter(todo => {
     switch (activeFilter) {
