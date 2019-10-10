@@ -40,7 +40,8 @@ class Firebase {
 
   // *** User API ***
 
-  user = uid => this.db.doc(`users/${uid}`);
+  // user = uid => this.db.collection(`users/${uid}`);
+  user = uid => this.db.collection("Users").doc(uid);
 
   users = () => this.db.collection("Users");
 

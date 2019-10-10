@@ -2,24 +2,20 @@ import React, { useContext } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { TodoContext } from "../contexts/TodoContext";
 const SignIn = () => {
-  const { firebase, isSignedIn } = useContext(TodoContext);
+  const { firebase, authUser } = useContext(TodoContext);
 
-  console.log(firebase.auth.currentUser);
   const uiConfig = {
-    // Popup signin flow rather than redirect flow.
     signInFlow: "popup",
-    // We will display Google and Facebook as auth providers.
     signInOptions: [firebase.app.auth.GithubAuthProvider.PROVIDER_ID],
     callbacks: {
-      // Avoid redirects after sign-in.
       signInSuccessWithAuthResult: () => false
     }
   };
 
-  if (isSignedIn === null) {
+  if (authUser === null) {
     return <></>;
   }
-  if (isSignedIn === false) {
+  if (!authUser) {
     return (
       <div>
         {/* <h1>My App</h1>

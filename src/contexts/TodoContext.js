@@ -7,6 +7,7 @@ export const TodoContext = createContext();
 
 const TodoContextProvider = ({ children }) => {
   const [activeFilter, dispatchFilter] = useReducer(filterTodosReducer, "All");
+  const authUser = useAuth();
   const {
     todos,
     addTodo,
@@ -15,16 +16,14 @@ const TodoContextProvider = ({ children }) => {
     editTodo,
     deleteTodo,
     clearTodos
-  } = useTodos();
-
-  const isSignedIn = useAuth();
+  } = useTodos(authUser);
 
   return (
     <TodoContext.Provider
       value={{
         firebase,
         todos,
-        isSignedIn,
+        authUser,
         addTodo,
         toggleTodo,
         toggleAllTodos,

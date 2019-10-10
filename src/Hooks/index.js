@@ -2,18 +2,25 @@ import { useState, useEffect } from "react";
 
 import firebase from "../config/firebase";
 
-export const useTodos = () => {
+export const useTodos = authUser => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    firebase.todos().onSnapshot(snapshot => {
-      const data = snapshot.docs.map(doc => {
-        return { id: doc.id, ...doc.data() };
-      });
+    firebase
+      .todos()
+      .where("userID", "==", authUser.uid)
+      .onSnapshot(snapshot => {
+        const data = snapshot.docs.map(doc => {
+          return { id: doc.id, ...doc.data() };
+        });
 
-      setTodos(data);
-    });
+        setTodos(data);
+      });
   }, []);
+
+  const getTodos = authUser => {
+    firebase.user(authUser.uid);
+  };
 
   const addTodo = content => {
     firebase.todos().add({ completed: false, content });
@@ -57,15 +64,16 @@ export const useTodos = () => {
 };
 
 export const useAuth = () => {
-  const [isSignedIn, setIsSignedIn] = useState(null);
+  const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth.onAuthStateChanged(user => {
-      setIsSignedIn(!!user);
+      setAuthUser(!!user);
+      console.log(user);
     });
 
     return () => unregisterAuthObserver();
-  }, [isSignedIn]);
+  }, []);
 
-  return isSignedIn;
+  return authUser;
 };
