@@ -3,15 +3,14 @@ import AddTodo from "./addTodo";
 import Footer from "./footer";
 import TodoList from "../components/todoList";
 import TodoContextProvider from "../contexts/TodoContext";
-import NavigationBar from "./navigationBar";
-import SignIn from "./signIn";
+import MyNavBar from "./myNavBar";
 
 const TodoApp = () => {
   return (
     <TodoContextProvider>
       <header>
-        <NavigationBar />
-        <SignIn />
+        <MyNavBar />
+
       </header>
       <br />
       <div className="container">

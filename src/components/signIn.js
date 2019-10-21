@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { TodoContext } from "../contexts/TodoContext";
-// import undefined from "firebase/empty-import";
-// import firebase from "../config/firebase";
 const SignIn = () => {
   const { authUser, firebase } = useContext(TodoContext);
 
@@ -14,27 +12,12 @@ const SignIn = () => {
     }
   };
 
-  // if (authUser === null) {
-  //   return <></>;
-  // }
+  if (authUser === undefined) return null;
 
-  console.log(authUser);
-  if (authUser === false) {
-    return (
-      <div>
-        {/* <h1>My App</h1>
-        <p>Please sign-in:</p> */}
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth} />
-      </div>
-    );
-  } else if (authUser === true) {
-    return (
-      <div>
-        {/* <h1>My App</h1>
-      <p>Welcome {firebase.auth.currentUser.email}! You are now signed-in!</p> */}
-        <button onClick={() => firebase.doSignOut()}>Sign-out</button>
-      </div>
-    );
+  if (!!authUser === false) {
+    return (<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth} />);
+  } else if (!!authUser === true) {
+    return (<button onClick={() => firebase.doSignOut()}>Sign-out</button>);
   } else return null;
 };
 

@@ -44,7 +44,7 @@ const AddTodoItem = () => {
     if (event.keyCode === ENTER_KEY && content !== "") {
       event.preventDefault();
 
-      addTodo(content);
+      addTodo(content, authUser);
 
       setContent("");
     }

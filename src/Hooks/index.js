@@ -6,19 +6,21 @@ export const useTodos = authUser => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    if (authUser) {
-      firebase
+    let unsubscribe = () => null;
+    if (!!authUser === true) {
+      unsubscribe = firebase
         .todos()
-        // .where("userId", "==", authUser.uid)
+        .where("userId", "==", authUser.uid)
         .onSnapshot(snapshot => {
-          const data = snapshot.docs.map(doc => {
-            return { id: doc.id, ...doc.data() };
+          const newTodos = snapshot.docs.map(todo => {
+            return { id: todo.id, ...todo.data() };
           });
-          setTodos(data);
+          setTodos(newTodos);
         });
     } else {
       setTodos([]);
     }
+    return () => unsubscribe();
   }, [authUser]);
 
   const addTodo = (content, authUser) => {
@@ -67,7 +69,7 @@ export const useAuth = () => {
 
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth.onAuthStateChanged(user => {
-      setAuthUser(!!user);
+      setAuthUser(user);
     });
 
     return () => unregisterAuthObserver();

@@ -1,25 +1,13 @@
 import React from "react";
-import { GithubLoginButton } from "react-social-login-buttons";
+import SignIn from './signIn'
 
-const myNavBar = ({ user, signOut, signInWithGithub }) => {
-  return (
-    <div className="navbar-container">
-      <div className="navbar">
-        <div className="navbar-app">TODO App</div>
-        <div>
-          {user ? (
-            <GithubLoginButton onClick={signOut}>
-              <span>Sign out</span>
-            </GithubLoginButton>
-          ) : (
-            <GithubLoginButton onClick={signInWithGithub}>
-              <span>Sign in with Github</span>
-            </GithubLoginButton>
-          )}
-        </div>
-      </div>
+const MyNavBar = () => (
+  <div className="navbar-container">
+    <div className="navbar">
+      <span>This is a LOGO</span>
+      <SignIn />
     </div>
-  );
-};
+  </div>
+);
 
-export default myNavBar;
+export default MyNavBar;
