@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
-// import { connect } from "react-redux";
-// import { filterTodos, clearTodoItems } from "../actions/index";
-import { TodoContext } from "../contexts/TodoContext";
-import { useTodos } from "../Hooks";
+import { TodoContext } from "../../../contexts/TodoContext";
+import { useTodos } from "../../../Hooks";
 
 const Footer = () => {
   const { activeFilter, dispatchFilter, authUser } = useContext(TodoContext);

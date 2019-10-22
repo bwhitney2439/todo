@@ -1,6 +1,6 @@
 import React from "react";
 import AddTodo from "./addTodo";
-import Footer from "./footer";
+import Footer from "./layout/Footer";
 import TodoList from "../components/todoList";
 import TodoContextProvider from "../contexts/TodoContext";
 import MyNavBar from "./myNavBar";

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import TodoApp from "./components/TodoApp";
+import App from "./components/App";
 import "./index.css";
 
-ReactDOM.render(<TodoApp />, document.querySelector("#root"));
+ReactDOM.render(<App />, document.querySelector("#root"));
