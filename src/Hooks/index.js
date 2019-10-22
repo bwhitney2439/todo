@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Route, Redirect } from 'react-router-dom'
-import { TodoContext } from "./../contexts/TodoContext";
+import { useState, useEffect } from "react";
 import firebase from "../config/firebase";
 
 export const useTodos = authUser => {
@@ -65,33 +63,19 @@ export const useTodos = authUser => {
   };
 };
 
-export const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
-  const { authUser } = useContext(TodoContext);
+// export const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
+//   const { authUser } = useContext(TodoContext);
 
-  return (
-    <Route
-      {...rest}
-      render={routeProps =>
-        !!authUser ? (
-          <RouteComponent {...routeProps} />
-        ) : (
-            <Redirect to={"/login"} />
-          )
-      }
-    />
-  )
-}
-
-// export const useAuth = () => {
-//   const [authUser, setAuthUser] = useState();
-
-//   useEffect(() => {
-//     const unregisterAuthObserver = firebase.auth.onAuthStateChanged(user => {
-//       setAuthUser(user);
-//     });
-
-//     return () => unregisterAuthObserver();
-//   }, [authUser]);
-
-//   return authUser;
+//   return (
+//     <Route
+//       {...rest}
+//       render={routeProps =>
+//         !!authUser ? (
+//           <RouteComponent {...routeProps} />
+//         ) : (
+//           <Redirect to={"/login"} />
+//         )
+//       }
+//     />
+//   );
 // };

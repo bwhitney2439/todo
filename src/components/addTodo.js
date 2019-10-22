@@ -5,10 +5,11 @@ import { useTodos } from "../Hooks";
 
 const ENTER_KEY = 13;
 
-const AddTodoItem = () => {
+const AddTodo = () => {
   const [content, setContent] = useState("");
   const { authUser } = useContext(TodoContext);
 
+  // console.log(authUser);
   const { todos, addTodo, toggleAllTodos } = useTodos(authUser);
 
   const activeTodoCount = todos.reduce((accum, todo) => {
@@ -73,4 +74,4 @@ const AddTodoItem = () => {
   );
 };
 
-export default AddTodoItem;
+export default AddTodo;

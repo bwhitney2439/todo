@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { TodoContext } from "../../../contexts/TodoContext";
-import { useTodos } from "../../../Hooks";
+import { TodoContext } from "../contexts/TodoContext";
+import { useTodos } from "../Hooks";
 
-const Footer = () => {
+const Filter = () => {
   const { activeFilter, dispatchFilter, authUser } = useContext(TodoContext);
 
   const { todos, clearTodos } = useTodos(authUser);
@@ -52,4 +52,4 @@ const Footer = () => {
   ) : null;
 };
 
-export default Footer;
+export default Filter;

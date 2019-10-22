@@ -1,24 +1,23 @@
-import React, { createContext, useReducer, useState, useEffect } from "react";
-import { withRouter } from 'react-router-dom'
+import React, { createContext, useReducer } from "react";
 import { filterTodosReducer } from "../reducers/filterTodosReducer";
 import firebase from "../config/firebase";
+import UseAuth from "../components/auth/UseAuth";
+
 export const TodoContext = createContext();
 
-const TodoContextProvider = ({ history, children }) => {
+const TodoContextProvider = ({ children }) => {
   const [activeFilter, dispatchFilter] = useReducer(filterTodosReducer, "All");
-  const [authUser, setAuthUser] = useState();
+  // const [authUser, setAuthUser] = useState();
 
-  useEffect(() => {
-    firebase.auth.onAuthStateChanged(user => {
-      setAuthUser(user)
+  // useEffect(() => {
+  //   firebase.auth.onAuthStateChanged(user => {
+  //     setAuthUser(user);
+  //   });
 
-      if (authUser != null) {
-        history.push("/")
-      }
-    });
+  //   // return () => unregisterAuthObserver();
+  // }, []);
 
-  }, []);
-
+  const authUser = UseAuth();
 
   return (
     <TodoContext.Provider
@@ -34,4 +33,4 @@ const TodoContextProvider = ({ history, children }) => {
   );
 };
 
-export default withRouter(TodoContextProvider);
+export default TodoContextProvider;
