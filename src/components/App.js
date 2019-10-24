@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,42 +10,32 @@ import MyNavBar from "./myNavBar";
 import Home from "./layout/Home";
 import Login from "./layout/Login";
 import "../index.css";
-import firebase from "../config/firebase";
-import AuthUserContext from "../contexts/AuthUserContext";
-
+import { AuthUserContext } from '../contexts/AuthUserContext'
+// import PrivateRoute from './PrivateRoute'
 const App = () => {
-  const [authUser, setAuthUser] = useState();
+  const authUser = useContext(AuthUserContext)
 
-  useEffect(() => {
-    const unregisterAuthObserver = firebase.auth.onAuthStateChanged(
-      setAuthUser
-    );
 
-    return () => unregisterAuthObserver();
-  }, []);
-
-  console.log(authUser);
   return (
-    <AuthUserContext.Provider value={authUser}>
-      <Router>
-        <div>
-          <MyNavBar />
-          <Switch>
-            {/* <PrivateRoute exact path="/">
+
+    <Router>
+      <div>
+        <MyNavBar />
+        <Switch>
+          {/* <PrivateRoute exact path="/">
             <Home />
           </PrivateRoute> */}
-            <Route
-              exact
-              path="/"
-              render={() => (!!authUser ? <Home /> : <Redirect to="/login" />)}
-            />
-            <Route path="/login">
-              <Login />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
-    </AuthUserContext.Provider>
+          <Route
+            exact
+            path="/"
+            render={() => (!!authUser ? <Home /> : <Redirect to="/login" />)}
+          />
+          <Route path="/login">
+            <Login />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
-};
+}
 export default App;

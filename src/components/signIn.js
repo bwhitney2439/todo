@@ -2,18 +2,13 @@ import React, { useContext, useState } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { TodoContext } from "../contexts/TodoContext";
 import { withRouter } from "react-router-dom";
-import AuthUserContext from "../contexts/AuthUserContext";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect
-} from "react-router-dom";
+import { AuthUserContext } from "../contexts/AuthUserContext";
+
 
 const SignIn = props => {
   const { firebase } = useContext(TodoContext);
-  const authUser = useContext(AuthUserContext);
   const [error, setError] = useState();
+  const authUser = useContext(AuthUserContext);
 
   const uiConfig = {
     signInFlow: "popup",
@@ -21,36 +16,27 @@ const SignIn = props => {
     signInOptions: [firebase.app.auth.GithubAuthProvider.PROVIDER_ID],
     callbacks: {
       signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-        <Redirect to="/" />;
+
+        firebase
+          .user(authResult.user.uid)
+          .set({
+            username: authResult.user.displayName,
+            email: authResult.user.email,
+            roles: []
+          })
+          .then(() => {
+            setError(null);
+            props.history.push("/");
+          })
+          .catch(error => {
+            setError(error);
+          });
         return false;
       }
     }
-  };
+  }
 
-  // const handleGithubSignIn = () => {
-  //   firebase
-  //     .doSignInWithGitHub()
-  //     .then(socialAuthUser => {
-  //       // Create a user in your Firebase Realtime Database too
-  //       firebase
-  //         .user(socialAuthUser.user.uid)
-  //         .set({
-  //           username: socialAuthUser.user.displayName,
-  //           email: socialAuthUser.user.email,
-  //           roles: []
-  //         })
-  //         .then(() => {
-  //           setError(null);
-  //           props.history.push("/");
-  //         })
-  //         .catch(error => {
-  //           setError(error);
-  //         });
-  //     })
-  //     .catch(error => {
-  //       setError(error);
-  //     });
-  // };
+
 
   if (authUser === undefined) return null;
 
@@ -63,5 +49,6 @@ const SignIn = props => {
     return <button onClick={() => firebase.doSignOut()}>Sign-out</button>;
   } else return null;
 };
+
 
 export default withRouter(SignIn);

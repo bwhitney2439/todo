@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
-import { TodoContext } from "../contexts/TodoContext";
+import { AuthUserContext } from '../contexts/AuthUserContext'
 
 const PrivateRoute = ({ children, ...rest }) => {
-  const { authUser } = useContext(TodoContext);
+  const authUser = useContext(AuthUserContext);
 
-  console.log(authUser);
 
   return (
     <Route

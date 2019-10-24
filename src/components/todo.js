@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 
 import { useTodos } from "../Hooks";
-import AuthUserContext from "../contexts/AuthUserContext";
+import { AuthUserContext } from "../contexts/AuthUserContext";
 const ENTER_KEY = 13;
 const ESCAPE_KEY = 27;
 
@@ -78,7 +78,7 @@ const Todo = ({ todo }) => {
         onClick={() => handleToggle(todo)}
         className={`far ${
           todo.completed ? "fa-check-circle" : "fa-circle"
-        } fa-w-14 fa-2x`}
+          } fa-w-14 fa-2x`}
       />
       {renderInput()}
       <i

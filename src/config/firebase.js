@@ -13,7 +13,6 @@ class Firebase {
     this.db = app.firestore();
     this.app = app;
 
-    this.gitHubProvider = new app.auth.GithubAuthProvider();
   }
 
   // *** Auth API ***

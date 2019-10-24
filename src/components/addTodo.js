@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import "./addTodo.css";
 import { useTodos } from "../Hooks";
-import AuthUserContext from "../contexts/AuthUserContext";
+import { AuthUserContext } from "../contexts/AuthUserContext";
 const ENTER_KEY = 13;
 
 const AddTodo = () => {

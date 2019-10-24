@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { TodoContext } from "../contexts/TodoContext";
 import { useTodos } from "../Hooks";
-import AuthUserContext from "../contexts/AuthUserContext";
+import { AuthUserContext } from "../contexts/AuthUserContext";
 
 const Filter = () => {
   const { activeFilter, dispatchFilter } = useContext(TodoContext);

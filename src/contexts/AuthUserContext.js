@@ -1,5 +1,29 @@
-import { createContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import firebase from '../config/firebase'
 
-const AuthUserContext = createContext(undefined);
+export const AuthUserContext = createContext(undefined);
 
-export default AuthUserContext;
+
+const AuthUserContextProvider = ({ children }) => {
+    const [authUser, setAuthUser] = useState(null);
+
+    useEffect(() => {
+        const unregisterAuthObserver = firebase.auth.onAuthStateChanged(
+            setAuthUser
+        );
+
+        return () => unregisterAuthObserver();
+    }, []);
+
+
+    console.log(authUser)
+    return (
+        <AuthUserContext.Provider value={authUser} >
+            {children}
+        </AuthUserContext.Provider>
+    );
+};
+
+export default AuthUserContextProvider;
+
+
