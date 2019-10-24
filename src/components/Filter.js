@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { TodoContext } from "../contexts/TodoContext";
 import { useTodos } from "../Hooks";
 import { AuthUserContext } from "../contexts/AuthUserContext";
-
+import "./Filter.css";
 const Filter = () => {
   const { activeFilter, dispatchFilter } = useContext(TodoContext);
   const authUser = useContext(AuthUserContext);
@@ -18,8 +18,6 @@ const Filter = () => {
   const handleClearTodos = () => {
     clearTodos();
   };
-
-  console.log(authUser);
 
   return todos.length ? (
     <div className="filter">

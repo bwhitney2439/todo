@@ -1,7 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { TodoContext } from "../contexts/TodoContext";
-import Todo from "./todo";
+import Todo from "./Todo";
 import { useTodos } from "../Hooks";
 import { AuthUserContext } from "../contexts/AuthUserContext";
 

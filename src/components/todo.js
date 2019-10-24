@@ -1,7 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
-
+import { FaRegCircle, FaRegCheckCircle, FaTimes } from "react-icons/fa";
 import { useTodos } from "../Hooks";
 import { AuthUserContext } from "../contexts/AuthUserContext";
+import "./Todo.css";
+
 const ENTER_KEY = 13;
 const ESCAPE_KEY = 27;
 
@@ -43,9 +45,26 @@ const Todo = ({ todo }) => {
     deleteTodo(id);
   };
 
-  const renderInput = () => {
-    if (editing) {
-      return (
+  const handleChange = event => {
+    setContent(event.target.value);
+  };
+
+  return (
+    <div className={`input-container ${editing ? "edit" : ""}`}>
+      {todo.completed ? (
+        <FaRegCheckCircle
+          className="fa-icon"
+          onClick={() => handleToggle(todo)}
+          size="30px"
+        />
+      ) : (
+        <FaRegCircle
+          className="fa-icon"
+          onClick={() => handleToggle(todo)}
+          size="30px"
+        />
+      )}
+      {editing ? (
         <input
           className={todo.completed ? "input-completed input-edit" : ""}
           type="text"
@@ -55,35 +74,18 @@ const Todo = ({ todo }) => {
           onKeyDown={handleEditTodoKeyDown}
           autoFocus
         />
-      );
-    } else {
-      return (
+      ) : (
         <label
           className={todo.completed ? "input-completed" : ""}
           onDoubleClick={handleToggleEdit}
         >
           {content}
         </label>
-      );
-    }
-  };
-
-  const handleChange = event => {
-    setContent(event.target.value);
-  };
-
-  return (
-    <div className={`input-container ${editing ? "edit" : ""}`}>
-      <i
-        onClick={() => handleToggle(todo)}
-        className={`far ${
-          todo.completed ? "fa-check-circle" : "fa-circle"
-          } fa-w-14 fa-2x`}
-      />
-      {renderInput()}
-      <i
-        className="fas fa-times fa-w-14 fa-2x destroy"
+      )}
+      <FaTimes
+        className="fa-icon destroy"
         onClick={() => handleDeleteTodo(todo.id)}
+        size="30px"
       />
     </div>
   );

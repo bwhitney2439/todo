@@ -4,7 +4,6 @@ import firebase from "../config/firebase";
 export const useTodos = authUser => {
   const [todos, setTodos] = useState([]);
 
-  console.log(authUser)
   useEffect(() => {
     let unsubscribe = () => null;
     if (!!authUser) {
@@ -22,7 +21,6 @@ export const useTodos = authUser => {
     }
     return () => unsubscribe();
   }, [authUser]);
-
 
   const addTodo = (content, authUser) => {
     firebase.todos().add({ completed: false, content, userId: authUser.uid });

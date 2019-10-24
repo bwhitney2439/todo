@@ -1,0 +1,17 @@
+.dim-toggleAll {
+  opacity: 1;
+  padding: 10px;
+  min-width: 5%;
+}
+
+.hide-toggleAll {
+  opacity: 0;
+  padding: 10px;
+  min-width: 5%;
+}
+
+.display-toggleAll {
+  padding: 10px;
+  opacity: 0.5;
+  min-width: 5%;
+}

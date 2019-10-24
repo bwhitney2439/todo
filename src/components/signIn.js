@@ -4,7 +4,6 @@ import { TodoContext } from "../contexts/TodoContext";
 import { withRouter } from "react-router-dom";
 import { AuthUserContext } from "../contexts/AuthUserContext";
 
-
 const SignIn = props => {
   const { firebase } = useContext(TodoContext);
   const [error, setError] = useState();
@@ -16,27 +15,28 @@ const SignIn = props => {
     signInOptions: [firebase.app.auth.GithubAuthProvider.PROVIDER_ID],
     callbacks: {
       signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+        const createdAt = new Date();
 
         firebase
           .user(authResult.user.uid)
           .set({
             username: authResult.user.displayName,
             email: authResult.user.email,
-            roles: []
+            roles: [],
+            createdAt
           })
           .then(() => {
             setError(null);
             props.history.push("/");
           })
-          .catch(error => {
-            setError(error);
+          .catch(err => {
+            setError(err);
+            console.log(error);
           });
         return false;
       }
     }
-  }
-
-
+  };
 
   if (authUser === undefined) return null;
 
@@ -49,6 +49,5 @@ const SignIn = props => {
     return <button onClick={() => firebase.doSignOut()}>Sign-out</button>;
   } else return null;
 };
-
 
 export default withRouter(SignIn);
