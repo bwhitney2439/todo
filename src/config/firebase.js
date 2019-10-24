@@ -12,6 +12,8 @@ class Firebase {
     // this.db = app.database();
     this.db = app.firestore();
     this.app = app;
+
+    this.gitHubProvider = new app.auth.GithubAuthProvider();
   }
 
   // *** Auth API ***
@@ -27,10 +29,37 @@ class Firebase {
     });
   };
 
+  createUserProfileDocument = async (userAuth, additionalData) => {
+    if (!userAuth) return;
+
+    const userRef = this.db.doc(`users/${userAuth.uid}`);
+
+    const snapShot = await userRef.get();
+
+    if (!snapShot.exists) {
+      const { displayName, email } = userAuth;
+      const createdAt = new Date();
+      try {
+        await userRef.set({
+          displayName,
+          email,
+          createdAt,
+          ...additionalData
+        });
+      } catch (error) {
+        console.log("error creating user", error.message);
+      }
+    }
+
+    return userRef;
+  };
+
   doSignInWithEmailAndPassword = async (email, password) =>
     await this.auth.signInWithEmailAndPassword(email, password);
 
-  doSignOut = async () => await this.auth.signOut();
+  doSignInWithGitHub = () => this.auth.signInWithPopup(this.gitHubProvider);
+
+  doSignOut = () => this.auth.signOut();
 
   doPasswordReset = async email =>
     await this.auth.sendPasswordResetEmail(email);

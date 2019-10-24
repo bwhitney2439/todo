@@ -1,40 +1,51 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 // import * as ROUTES from "../constants/routes";
-import TodoContextProvider from "../contexts/TodoContext";
-// import LandingPage from "../components/landingPage";
-import PrivateRoute from "./PrivateRoute";
 import MyNavBar from "./myNavBar";
 import Home from "./layout/Home";
 import Login from "./layout/Login";
 import "../index.css";
+import firebase from "../config/firebase";
+import AuthUserContext from "../contexts/AuthUserContext";
 
-const App = () => (
-  <TodoContextProvider>
-    <Router>
-      <div>
-        <MyNavBar />
-        <Switch>
-          <PrivateRoute exact path="/">
+const App = () => {
+  const [authUser, setAuthUser] = useState();
+
+  useEffect(() => {
+    const unregisterAuthObserver = firebase.auth.onAuthStateChanged(
+      setAuthUser
+    );
+
+    return () => unregisterAuthObserver();
+  }, []);
+
+  console.log(authUser);
+  return (
+    <AuthUserContext.Provider value={authUser}>
+      <Router>
+        <div>
+          <MyNavBar />
+          <Switch>
+            {/* <PrivateRoute exact path="/">
             <Home />
-          </PrivateRoute>
-          <Route path="/login">
-            <Login />
-          </Route>
-          {/* //   {/* <Route exact path={ROUTES.LANDING} component={LandingPage}></Route>
-        // <Route path={ROUTES.SIGN_UP} component={SignUpPage}></Route>
-        // <Route path={ROUTES.SIGN_IN} component={SignInPage}></Route>
-        // <Route
-        //   path={ROUTES.PASSWORD_FORGET}
-        //   component={PasswordForgetPage}
-        // ></Route>
-        // <Route path={ROUTES.HOME} component={HomePage}></Route>
-        // <Route path={ROUTES.ACCOUNT} component={AccountPage}></Route>
-      // <Route path={ROUTES.ADMIN} component={AdminPage}></Route> */}
-        </Switch>
-      </div>
-    </Router>
-  </TodoContextProvider>
-);
-
+          </PrivateRoute> */}
+            <Route
+              exact
+              path="/"
+              render={() => (!!authUser ? <Home /> : <Redirect to="/login" />)}
+            />
+            <Route path="/login">
+              <Login />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </AuthUserContext.Provider>
+  );
+};
 export default App;

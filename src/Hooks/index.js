@@ -6,7 +6,7 @@ export const useTodos = authUser => {
 
   useEffect(() => {
     let unsubscribe = () => null;
-    if (!!authUser === true) {
+    if (!!authUser) {
       unsubscribe = firebase
         .todos()
         .where("userId", "==", authUser.uid)
@@ -21,6 +21,8 @@ export const useTodos = authUser => {
     }
     return () => unsubscribe();
   }, [authUser]);
+
+  console.log("useTodos is loading");
 
   const addTodo = (content, authUser) => {
     firebase.todos().add({ completed: false, content, userId: authUser.uid });

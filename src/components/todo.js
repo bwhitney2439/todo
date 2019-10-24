@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 
-import { TodoContext } from "./../contexts/TodoContext";
 import { useTodos } from "../Hooks";
-
+import AuthUserContext from "../contexts/AuthUserContext";
 const ENTER_KEY = 13;
 const ESCAPE_KEY = 27;
 
 const Todo = ({ todo }) => {
-  const { authUser } = useContext(TodoContext);
+  const authUser = useContext(AuthUserContext);
+
   const { toggleTodo, editTodo, deleteTodo } = useTodos(authUser);
   const [editing, setEditing] = useState(false);
   const [content, setContent] = useState("");

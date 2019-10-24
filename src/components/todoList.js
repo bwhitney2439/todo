@@ -3,9 +3,11 @@ import { useContext } from "react";
 import { TodoContext } from "../contexts/TodoContext";
 import Todo from "./todo";
 import { useTodos } from "../Hooks";
+import AuthUserContext from "../contexts/AuthUserContext";
 
 const TodoList = () => {
-  const { authUser, activeFilter } = useContext(TodoContext);
+  const { activeFilter } = useContext(TodoContext);
+  const authUser = useContext(AuthUserContext);
 
   const { todos } = useTodos(authUser);
 

@@ -1,15 +1,12 @@
 import React, { useState, useContext } from "react";
-import { TodoContext } from "../contexts/TodoContext";
 import "./addTodo.css";
 import { useTodos } from "../Hooks";
-
+import AuthUserContext from "../contexts/AuthUserContext";
 const ENTER_KEY = 13;
 
 const AddTodo = () => {
   const [content, setContent] = useState("");
-  const { authUser } = useContext(TodoContext);
-
-  // console.log(authUser);
+  const authUser = useContext(AuthUserContext);
   const { todos, addTodo, toggleAllTodos } = useTodos(authUser);
 
   const activeTodoCount = todos.reduce((accum, todo) => {
