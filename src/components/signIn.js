@@ -1,48 +1,26 @@
 import React, { useContext, useState } from "react";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+// import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { TodoContext } from "../contexts/TodoContext";
 import { withRouter } from "react-router-dom";
 import { AuthUserContext } from "../contexts/AuthUserContext";
-
+import { FaDivide } from "react-icons/fa";
+import Modal from "./Modal";
 const SignIn = props => {
+  const [showModal, setShowModal] = useState(false);
   const { firebase } = useContext(TodoContext);
-  const [error, setError] = useState();
+  // const [error, setError] = useState();
   const authUser = useContext(AuthUserContext);
 
-  const uiConfig = {
-    signInFlow: "popup",
-    signInSuccessUrl: "/",
-    signInOptions: [firebase.app.auth.GithubAuthProvider.PROVIDER_ID],
-    callbacks: {
-      signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-        const createdAt = new Date();
-
-        firebase
-          .user(authResult.user.uid)
-          .set({
-            username: authResult.user.displayName,
-            email: authResult.user.email,
-            roles: [],
-            createdAt
-          })
-          .then(() => {
-            setError(null);
-            props.history.push("/");
-          })
-          .catch(err => {
-            setError(err);
-            console.log(error);
-          });
-        return false;
-      }
-    }
+  const handleDismissModal = () => {
+    setShowModal(false);
   };
-
-  // if (authUser === undefined) return null;
 
   if (!!authUser === false) {
     return (
-      <button onClick={}>Sign-In</button>;
+      <React.Fragment>
+        <button onClick={() => setShowModal(!showModal)}>Sign-In</button>
+        {showModal ? <Modal dismissModal={() => handleDismissModal} /> : null}
+      </React.Fragment>
     );
   } else if (!!authUser === true) {
     return <button onClick={() => firebase.doSignOut()}>Sign-out</button>;
