@@ -38,12 +38,11 @@ const SignIn = props => {
     }
   };
 
-  if (authUser === undefined) return null;
+  // if (authUser === undefined) return null;
 
   if (!!authUser === false) {
     return (
-      // <button onClick={handleGithubSignIn}>SignIn with Github</button>
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth} />
+      <button onClick={}>Sign-In</button>;
     );
   } else if (!!authUser === true) {
     return <button onClick={() => firebase.doSignOut()}>Sign-out</button>;

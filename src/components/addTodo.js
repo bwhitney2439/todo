@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import "./addTodo.css";
+import "./AddTodo.css";
 import { useTodos } from "../Hooks";
 import { AuthUserContext } from "../contexts/AuthUserContext";
 import ToggleAllButton from "./ToggleAllButton";

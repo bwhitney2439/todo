@@ -4,11 +4,20 @@ import firebase from "../config/firebase";
 export const AuthUserContext = createContext(undefined);
 
 const AuthUserContextProvider = ({ children }) => {
-  const [authUser, setAuthUser] = useState(null);
+  const [authUser, setAuthUser] = useState(JSON.parse(localStorage.getItem('authUser')));
 
   useEffect(() => {
-    const unregisterAuthObserver = firebase.auth.onAuthStateChanged(
-      setAuthUser
+    const unregisterAuthObserver = firebase.auth.onAuthStateChanged(user => {
+      if(user) {
+
+        localStorage.setItem('authUser', JSON.stringify(user));
+        setAuthUser(user);
+      } else {
+        localStorage.removeItem('authUser')
+        setAuthUser(null)
+      }
+    }
+      
     );
 
     return () => unregisterAuthObserver();
