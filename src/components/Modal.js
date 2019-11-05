@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import ModalInner from "./ModalInner";
+
+import ModalContent from "./ModalContent";
 
 const Modal = props => {
   return ReactDOM.createPortal(
-    <ModalInner {...props} />,
-    document.querySelector("#modal") //target DOM element
+    <ModalContent {...props} />,
+    document.querySelector("#modal")
   );
 };
 

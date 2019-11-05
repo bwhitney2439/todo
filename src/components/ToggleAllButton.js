@@ -11,7 +11,7 @@ const ToggleAllButton = ({ check, toggleAllComplete, count }) => {
   console.log(checked);
 
   return (
-    <div>
+    <React.Fragment>
       {!count ? (
         <FaChevronDown className="hide-toggleAll" size="30px" />
       ) : checked ? (
@@ -27,7 +27,7 @@ const ToggleAllButton = ({ check, toggleAllComplete, count }) => {
           size="30px"
         />
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

@@ -2,17 +2,20 @@ import React, { useContext, useState } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { TodoContext } from "../contexts/TodoContext";
 import { withRouter } from "react-router-dom";
-// import { AuthUserContext } from "../contexts/AuthUserContext";
-import "./ModalInner.css";
+import "./ModalContent.css";
 
-const ModalInner = props => {
+const ModalContent = props => {
   const { firebase } = useContext(TodoContext);
   const [error, setError] = useState();
 
   const uiConfig = {
     signInFlow: "popup",
     signInSuccessUrl: "/",
-    signInOptions: [firebase.app.auth.GithubAuthProvider.PROVIDER_ID],
+    signInOptions: [
+      firebase.app.auth.GithubAuthProvider.PROVIDER_ID,
+      firebase.app.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.app.auth.FacebookAuthProvider.PROVIDER_ID
+    ],
     callbacks: {
       signInSuccessWithAuthResult: (authResult, redirectUrl) => {
         const createdAt = new Date();
@@ -38,14 +41,12 @@ const ModalInner = props => {
     }
   };
 
-  const handleDismiss = () => {
-    console.log("hi there");
-    props.dismissModal(false);
-  };
-
   return (
-    <div className="modal">
-      <div className="modal-content animate" onClick={() => handleDismiss}>
+    <div className="modal" onClick={props.dismissModal}>
+      <div
+        className="modal-content animate"
+        onClick={event => event.stopPropagation()}
+      >
         <form action="/action_page.php">
           <div className="row">
             <h2 style={{ textAlign: "center" }}>
@@ -102,4 +103,4 @@ const ModalInner = props => {
   );
 };
 
-export default withRouter(ModalInner);
+export default withRouter(ModalContent);

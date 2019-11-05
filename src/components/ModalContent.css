@@ -1,6 +1,9 @@
+* {
+  box-sizing: border-box;
+}
+
 .modal {
   position: fixed; /* Stay in place */
-  z-index: 9999; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -8,7 +11,7 @@
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-  padding-top: 60px;
+  /* padding-top: 60px; */
 }
 
 /* style the container */
