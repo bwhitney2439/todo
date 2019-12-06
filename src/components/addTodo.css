@@ -3,6 +3,7 @@
   display: flex;
   border: 1px solid lightgrey;
   margin: 0;
+  margin-top: 25px;
   align-items: center;
 }
 

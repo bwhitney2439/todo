@@ -1,7 +1,8 @@
 header {
   height: 55px;
-  margin-bottom: 25px;
-  height: 55px;
+  position: sticky;
+  top: 0;
+  width: 100%;
 }
 
 .navbar-container {

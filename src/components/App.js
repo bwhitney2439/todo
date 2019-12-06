@@ -9,7 +9,7 @@ import {
 import Header from "./layout/Header";
 import Home from "./layout/Home";
 import Login from "./layout/Login";
-// import "../index.css";
+import "./App.css";
 import { AuthUserContext } from "../contexts/AuthUserContext";
 // import PrivateRoute from './PrivateRoute'
 const App = () => {

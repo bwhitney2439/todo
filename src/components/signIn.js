@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { AuthUserContext } from "../contexts/AuthUserContext";
 // import { FaDivide } from "react-icons/fa";
 import Modal from "./Modal";
+
 const SignIn = () => {
   const [showModal, setShowModal] = useState(false);
   const { firebase } = useContext(TodoContext);

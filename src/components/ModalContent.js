@@ -87,14 +87,14 @@ const ModalContent = props => {
         <div className="bottom-container">
           <div className="row">
             <div className="col">
-              <a href="#" style={{ color: "white" }} className="btn">
+              <div style={{ color: "white" }} className="btn">
                 Sign up
-              </a>
+              </div>
             </div>
             <div className="col">
-              <a href="#" style={{ color: "white" }} className="btn">
+              <div style={{ color: "white" }} className="btn">
                 Forgot password?
-              </a>
+              </div>
             </div>
           </div>
         </div>
