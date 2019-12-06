@@ -1,7 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { TodoContext } from "../contexts/TodoContext";
-import Todo from "./Todo";
+import ToDo from "./ToDo";
 import { useTodos } from "../Hooks";
 import { AuthUserContext } from "../contexts/AuthUserContext";
 
@@ -25,7 +25,7 @@ const TodoList = () => {
   return (
     <React.Fragment>
       {filteredTodos.map(todo => (
-        <Todo key={todo.id} todo={todo} />
+        <ToDo key={todo.id} todo={todo} />
       ))}
     </React.Fragment>
   );
