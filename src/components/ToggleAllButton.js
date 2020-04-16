@@ -8,8 +8,6 @@ const ToggleAllButton = ({ check, toggleAllComplete, count }) => {
     setChecked(check);
   }, [check]);
 
-  console.log(checked);
-
   return (
     <React.Fragment>
       {!count ? (

@@ -1,17 +1,16 @@
-import React, { useContext, useState } from "react";
-import { TodoContext } from "../contexts/TodoContext";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import { AuthUserContext } from "../contexts/AuthUserContext";
+import { useAppState } from "../contexts";
 // import { FaDivide } from "react-icons/fa";
 import Modal from "./Modal";
+import "./SignIn.css";
 
 const SignIn = () => {
   const [showModal, setShowModal] = useState(false);
-  const { firebase } = useContext(TodoContext);
-  const authUser = useContext(AuthUserContext);
+
+  const { firebase, authUser } = useAppState();
 
   const handleDismissModal = () => {
-    console.log("dismiss");
     setShowModal(false);
   };
 
@@ -22,17 +21,24 @@ const SignIn = () => {
     setShowModal(false);
     firebase.doSignOut();
   };
+  const handleSignInSignOut = () => {
+    if (!!authUser === true) {
+      firebase.doSignOut();
+    } else {
+      setShowModal((prevState) => !prevState);
+    }
+  };
 
-  if (!!authUser === false) {
-    return (
-      <React.Fragment>
-        <button onClick={handleSignIn}>Sign-In</button>
-        {showModal ? <Modal dismissModal={handleDismissModal} /> : null}
-      </React.Fragment>
-    );
-  } else if (!!authUser === true) {
-    return <button onClick={handleSignOut}>Sign-out</button>;
-  } else return null;
+  console.log(showModal);
+
+  return (
+    <React.Fragment>
+      <button type="button" onClick={handleSignInSignOut}>
+        {!!authUser !== true ? "Sign-In" : "Sign-Out"}
+      </button>
+      {showModal ? <Modal dismissModal={handleDismissModal} /> : null}
+    </React.Fragment>
+  );
 };
 
 export default withRouter(SignIn);

@@ -1,28 +1,26 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 // import * as ROUTES from "../constants/routes";
 import Header from "./layout/Header";
 import Home from "./layout/Home";
 import Login from "./layout/Login";
 import "./App.css";
-import { AuthUserContext } from "../contexts/AuthUserContext";
+import { useAppState } from "../contexts";
+
 // import PrivateRoute from './PrivateRoute'
 const App = () => {
-  const authUser = useContext(AuthUserContext);
+  const { authUser } = useAppState();
 
   return (
     <Router>
       <div>
         <Header />
         <Switch>
-          {/* <PrivateRoute exact path="/">
-            <Home />
-          </PrivateRoute> */}
           <Route
             exact
             path="/"

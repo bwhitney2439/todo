@@ -1,13 +1,9 @@
-import React, { useContext } from "react";
-import { TodoContext } from "../contexts/TodoContext";
-import { useTodos } from "../Hooks";
-import { AuthUserContext } from "../contexts/AuthUserContext";
+import React from "react";
+import { useAppState } from "../contexts";
+
 import "./Filter.css";
 const Filter = () => {
-  const { activeFilter, dispatchFilter } = useContext(TodoContext);
-  const authUser = useContext(AuthUserContext);
-
-  const { todos, clearTodos } = useTodos(authUser);
+  const { activeFilter, dispatchFilter, todos, clearTodos } = useAppState();
 
   const activeTodoCount = todos.reduce((accum, todo) => {
     return todo.completed ? accum : accum + 1;

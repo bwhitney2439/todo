@@ -1,17 +1,11 @@
 import React from "react";
-import { useContext } from "react";
-import { TodoContext } from "../contexts/TodoContext";
 import Todo from "./Todo";
-import { useTodos } from "../Hooks";
-import { AuthUserContext } from "../contexts/AuthUserContext";
+import { useAppState } from "../contexts";
 
 const TodoList = () => {
-  const { activeFilter } = useContext(TodoContext);
-  const authUser = useContext(AuthUserContext);
+  const { todos, activeFilter } = useAppState();
 
-  const { todos } = useTodos(authUser);
-
-  const filteredTodos = todos.filter(todo => {
+  const filteredTodos = todos.filter((todo) => {
     switch (activeFilter) {
       case "Active":
         return !todo.completed;
@@ -24,7 +18,7 @@ const TodoList = () => {
 
   return (
     <React.Fragment>
-      {filteredTodos.map(todo => (
+      {filteredTodos.map((todo) => (
         <Todo key={todo.id} todo={todo} />
       ))}
     </React.Fragment>

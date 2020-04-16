@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import firebase from "../config/firebase";
 
-export const useTodos = authUser => {
+export const useTodos = (authUser) => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
@@ -10,8 +10,8 @@ export const useTodos = authUser => {
       unsubscribe = firebase
         .todos()
         .where("userId", "==", authUser.uid)
-        .onSnapshot(snapshot => {
-          const newTodos = snapshot.docs.map(todo => {
+        .onSnapshot((snapshot) => {
+          const newTodos = snapshot.docs.map((todo) => {
             return { id: todo.id, ...todo.data() };
           });
           setTodos(newTodos);
@@ -26,12 +26,12 @@ export const useTodos = authUser => {
     firebase.todos().add({ completed: false, content, userId: authUser.uid });
   };
 
-  const toggleTodo = todo => {
+  const toggleTodo = (todo) => {
     firebase.todo(todo.id).update({ completed: !todo.completed });
   };
 
-  const toggleAllTodos = toggleAll => {
-    todos.forEach(todo => {
+  const toggleAllTodos = (toggleAll) => {
+    todos.forEach((todo) => {
       firebase.todo(todo.id).update({ completed: toggleAll });
     });
   };
@@ -40,14 +40,14 @@ export const useTodos = authUser => {
     firebase.todo(id).update({ content: content });
   };
 
-  const deleteTodo = id => {
+  const deleteTodo = (id) => {
     firebase.todo(id).delete();
   };
 
   const clearTodos = () => {
     todos
-      .filter(todo => todo.completed === true)
-      .forEach(todo => {
+      .filter((todo) => todo.completed === true)
+      .forEach((todo) => {
         firebase.todo(todo.id).delete();
       });
   };
@@ -59,7 +59,7 @@ export const useTodos = authUser => {
     toggleAllTodos,
     editTodo,
     deleteTodo,
-    clearTodos
+    clearTodos,
   };
 };
 

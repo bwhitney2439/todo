@@ -1,16 +1,13 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FaRegCircle, FaRegCheckCircle, FaTimes } from "react-icons/fa";
-import { useTodos } from "../Hooks";
-import { AuthUserContext } from "../contexts/AuthUserContext";
+import { useAppState } from "../contexts";
 import "./Todo.css";
 
 const ENTER_KEY = 13;
 const ESCAPE_KEY = 27;
 
 const Todo = ({ todo }) => {
-  const authUser = useContext(AuthUserContext);
-
-  const { toggleTodo, editTodo, deleteTodo } = useTodos(authUser);
+  const { toggleTodo, editTodo, deleteTodo } = useAppState();
   const [editing, setEditing] = useState(false);
   const [content, setContent] = useState("");
 
@@ -18,7 +15,7 @@ const Todo = ({ todo }) => {
     setContent(todo.content);
   }, [todo.content]);
 
-  const handleEditTodoKeyDown = event => {
+  const handleEditTodoKeyDown = (event) => {
     if (event.keyCode === ENTER_KEY && content !== "") {
       editTodo(todo.id, content);
       setEditing(false);
@@ -37,15 +34,15 @@ const Todo = ({ todo }) => {
     setEditing(!editing);
   };
 
-  const handleToggle = todo => {
+  const handleToggle = (todo) => {
     toggleTodo(todo);
   };
 
-  const handleDeleteTodo = id => {
+  const handleDeleteTodo = (id) => {
     deleteTodo(id);
   };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setContent(event.target.value);
   };
 

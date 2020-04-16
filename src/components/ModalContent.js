@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import { TodoContext } from "../contexts/TodoContext";
 import { withRouter } from "react-router-dom";
+import { useAppState } from "../contexts";
 import "./ModalContent.css";
 
-const ModalContent = props => {
-  const { firebase } = useContext(TodoContext);
+const ModalContent = (props) => {
+  const { firebase } = useAppState();
   const [error, setError] = useState();
 
   const uiConfig = {
@@ -14,38 +14,38 @@ const ModalContent = props => {
     signInOptions: [
       firebase.app.auth.GithubAuthProvider.PROVIDER_ID,
       firebase.app.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.app.auth.FacebookAuthProvider.PROVIDER_ID
+      firebase.app.auth.FacebookAuthProvider.PROVIDER_ID,
     ],
     callbacks: {
       signInSuccessWithAuthResult: (authResult, redirectUrl) => {
         const createdAt = new Date();
-
+        props.dismissModal();
         firebase
           .user(authResult.user.uid)
           .set({
             username: authResult.user.displayName,
             email: authResult.user.email,
             roles: [],
-            createdAt
+            createdAt,
           })
           .then(() => {
             setError(null);
             props.history.push("/");
           })
-          .catch(err => {
+          .catch((err) => {
+            console.log("error");
             setError(err);
-            console.log(error);
           });
         return false;
-      }
-    }
+      },
+    },
   };
 
   return (
     <div className="modal" onClick={props.dismissModal}>
       <div
         className="modal-content animate"
-        onClick={event => event.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
       >
         <form action="/action_page.php">
           <div className="row">

@@ -5,14 +5,11 @@ import firebaseConfig from "./config";
 
 class Firebase {
   constructor() {
-    app.initializeApp(firebaseConfig);
-
-    this.fieldValue = app.firestore.FieldValue;
-    this.auth = app.auth();
-    // this.db = app.database();
-    this.db = app.firestore();
     this.app = app;
-
+    this.app.initializeApp(firebaseConfig);
+    this.fieldValue = this.app.firestore.FieldValue;
+    this.auth = this.app.auth();
+    this.db = this.app.firestore();
   }
 
   // *** Auth API ***
@@ -24,7 +21,7 @@ class Firebase {
     );
 
     return await newUser.user.updateProfile({
-      displayName: email
+      displayName: email,
     });
   };
 
@@ -43,7 +40,7 @@ class Firebase {
           displayName,
           email,
           createdAt,
-          ...additionalData
+          ...additionalData,
         });
       } catch (error) {
         console.log("error creating user", error.message);
@@ -60,22 +57,22 @@ class Firebase {
 
   doSignOut = () => this.auth.signOut();
 
-  doPasswordReset = async email =>
+  doPasswordReset = async (email) =>
     await this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate = async password =>
+  doPasswordUpdate = async (password) =>
     await this.auth.currentUser.updatePassword(password);
 
   // *** User API ***
 
   // user = uid => this.db.collection(`users/${uid}`);
-  user = uid => this.db.collection("Users").doc(uid);
+  user = (uid) => this.db.collection("Users").doc(uid);
 
   users = () => this.db.collection("Users");
 
   // **** Todo API ****
 
-  todo = id => this.db.collection("Todos").doc(id);
+  todo = (id) => this.db.collection("Todos").doc(id);
   todos = () => this.db.collection("Todos");
 }
 
