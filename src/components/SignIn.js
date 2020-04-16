@@ -14,13 +14,6 @@ const SignIn = () => {
     setShowModal(false);
   };
 
-  const handleSignIn = () => {
-    setShowModal(true);
-  };
-  const handleSignOut = () => {
-    setShowModal(false);
-    firebase.doSignOut();
-  };
   const handleSignInSignOut = () => {
     if (!!authUser === true) {
       firebase.doSignOut();
