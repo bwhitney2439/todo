@@ -62,20 +62,3 @@ export const useTodos = (authUser) => {
     clearTodos,
   };
 };
-
-// export const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
-//   const { authUser } = useContext(TodoContext);
-
-//   return (
-//     <Route
-//       {...rest}
-//       render={routeProps =>
-//         !!authUser ? (
-//           <RouteComponent {...routeProps} />
-//         ) : (
-//           <Redirect to={"/login"} />
-//         )
-//       }
-//     />
-//   );
-// };

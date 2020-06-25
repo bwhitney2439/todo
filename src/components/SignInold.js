@@ -4,6 +4,7 @@ import { useAppState } from "../contexts";
 // import { FaDivide } from "react-icons/fa";
 import Modal from "./Modal";
 import "./SignIn.css";
+import { Button } from "@material-ui/core";
 
 const SignIn = () => {
   const [showModal, setShowModal] = useState(false);
@@ -26,9 +27,9 @@ const SignIn = () => {
 
   return (
     <React.Fragment>
-      <button type="button" onClick={handleSignInSignOut}>
+      <Button color="inherit" onClick={handleSignInSignOut}>
         {!!authUser !== true ? "Sign-In" : "Sign-Out"}
-      </button>
+      </Button>
       {showModal ? <Modal dismissModal={handleDismissModal} /> : null}
     </React.Fragment>
   );

@@ -8,29 +8,26 @@ import {
 // import * as ROUTES from "../constants/routes";
 import Header from "./layout/Header";
 import Home from "./layout/Home";
-import Login from "./layout/Login";
 import "./App.css";
 import { useAppState } from "../contexts";
+import NavBar from "./layout/Header/NavBar";
+import SignIn from "./layout/SignIn";
 
-// import PrivateRoute from './PrivateRoute'
 const App = () => {
   const { authUser } = useAppState();
 
   return (
     <Router>
-      <div>
-        <Header />
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => (!!authUser ? <Home /> : <Redirect to="/login" />)}
-          />
-          <Route path="/login">
-            <Login />
-          </Route>
-        </Switch>
-      </div>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={() => (!!authUser ? <Home /> : <Redirect to="/login" />)}
+        />
+        <Route path="/login">
+          <SignIn />
+        </Route>
+      </Switch>
     </Router>
   );
 };
