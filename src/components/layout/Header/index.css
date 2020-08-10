@@ -1,4 +1,4 @@
-/* header {
+header {
   height: 55px;
   position: sticky;
   top: 0;
@@ -20,4 +20,4 @@
   justify-content: space-between;
   align-items: center;
   margin: auto;
-} */
+}

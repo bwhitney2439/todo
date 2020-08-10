@@ -29,6 +29,7 @@ export const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth.onAuthStateChanged((user) => {
+      console.log(user);
       if (user) {
         localStorage.setItem("authUser", JSON.stringify(user));
         setAuthUser(user);

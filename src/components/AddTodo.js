@@ -5,15 +5,13 @@ import ToggleAllButton from "./ToggleAllButton";
 
 const ENTER_KEY = 13;
 
-const AddTodo = () => {
+const AddTodo = ({ todos }) => {
   const [content, setContent] = useState("");
-  const { todos, addTodo, toggleAllTodos, authUser } = useAppState();
+  const { addTodo, toggleAllTodos, authUser } = useAppState();
 
   const { length: count } = todos;
 
-  const activeTodoCount = todos.reduce((accum, todo) => {
-    return todo.completed ? accum : accum + 1;
-  }, 0);
+  const allCompleted = todos.every((todo) => todo.completed === true);
 
   const handleNewTodoKeyDown = (event) => {
     if (event.keyCode === ENTER_KEY && content !== "") {
@@ -37,7 +35,7 @@ const AddTodo = () => {
     <div className="addtodo-input-container">
       <ToggleAllButton
         toggleAllComplete={(checked) => handleToggleAllComplete(checked)}
-        check={activeTodoCount === 0}
+        check={allCompleted}
         count={count}
       />
       <input

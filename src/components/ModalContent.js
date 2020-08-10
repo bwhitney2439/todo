@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import { withRouter } from "react-router-dom";
 import { useAppState } from "../contexts";
 import "./ModalContent.css";
+import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core";
 
-const ModalContent = (props) => {
+const ModalContent = () => {
   const { firebase } = useAppState();
   const [error, setError] = useState();
 
   const uiConfig = {
-    signInFlow: "popup",
-    signInSuccessUrl: "/",
+    signInFlow: "redirect",
+    signInSuccessUrl: "http://localhost:3000/home",
     signInOptions: [
       firebase.app.auth.GithubAuthProvider.PROVIDER_ID,
       firebase.app.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -19,7 +20,6 @@ const ModalContent = (props) => {
     callbacks: {
       signInSuccessWithAuthResult: (authResult, redirectUrl) => {
         const createdAt = new Date();
-        props.dismissModal();
         firebase
           .user(authResult.user.uid)
           .set({
@@ -30,77 +30,36 @@ const ModalContent = (props) => {
           })
           .then(() => {
             setError(null);
-            props.history.push("/");
           })
           .catch((err) => {
             console.log("error");
             setError(err);
           });
-        return false;
+
+        return true;
       },
     },
   };
 
+  const useStyles = makeStyles((theme) => ({
+    paper: {
+      position: "absolute",
+      width: 400,
+      backgroundColor: theme.palette.background.paper,
+      // border: "2px solid #000",
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+  }));
+
+  const classes = useStyles();
+
   return (
-    <div className="modal" onClick={props.dismissModal}>
-      <div
-        className="modal-content animate"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <form action="/action_page.php">
-          <div className="row">
-            <h2 style={{ textAlign: "center" }}>
-              Login with Social Media or Manually
-            </h2>
-            <div className="vl">
-              <span className="vl-innertext">or</span>
-            </div>
-
-            <div className="col">
-              <StyledFirebaseAuth
-                uiConfig={uiConfig}
-                firebaseAuth={firebase.auth}
-              />
-            </div>
-
-            <div className="col">
-              <div className="hide-md-lg">
-                <p>Or sign in manually:</p>
-              </div>
-
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                required
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                required
-              />
-              <input type="submit" value="Login" />
-            </div>
-          </div>
-        </form>
-        <div className="bottom-container">
-          <div className="row">
-            <div className="col">
-              <div style={{ color: "white" }} className="btn">
-                Sign up
-              </div>
-            </div>
-            <div className="col">
-              <div style={{ color: "white" }} className="btn">
-                Forgot password?
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className={classes.paper}>
+      <h2 id="simple-modal-title">Text in a modal</h2>
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth} />
     </div>
   );
 };
 
-export default withRouter(ModalContent);
+export default ModalContent;

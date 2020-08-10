@@ -19,7 +19,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import { useAppState } from "../../../contexts";
-import { Menu, MenuItem } from "@material-ui/core";
+import { Menu, MenuItem, Button } from "@material-ui/core";
+import SignIn from "../../SignInold";
 
 const drawerWidth = 240;
 
@@ -140,7 +141,7 @@ export default function MiniDrawer({ children }) {
           <Typography variant="h6" style={{ flexGrow: 1 }} noWrap>
             Mini variant drawer
           </Typography>
-          {authUser && (
+          {authUser ? (
             <div>
               <IconButton
                 aria-label="account of current user"
@@ -171,6 +172,8 @@ export default function MiniDrawer({ children }) {
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
             </div>
+          ) : (
+            <SignIn />
           )}
         </Toolbar>
       </AppBar>

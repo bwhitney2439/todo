@@ -1,38 +1,40 @@
 import React, { useState } from "react";
-import { withRouter } from "react-router-dom";
 import { useAppState } from "../contexts";
 // import { FaDivide } from "react-icons/fa";
-import Modal from "./Modal";
 import "./SignIn.css";
-import { Button } from "@material-ui/core";
+import { Button, Modal } from "@material-ui/core";
+import ModalContent from "./ModalContent";
 
 const SignIn = () => {
+  // getModalStyle is not a pure function, we roll the style only on the first render
+  const [open, setOpen] = React.useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const { firebase, authUser } = useAppState();
 
-  const handleDismissModal = () => {
-    setShowModal(false);
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  const handleSignInSignOut = () => {
-    if (!!authUser === true) {
-      firebase.doSignOut();
-    } else {
-      setShowModal((prevState) => !prevState);
-    }
+  const handleOpen = () => {
+    setOpen(true);
   };
-
-  console.log(showModal);
 
   return (
     <React.Fragment>
-      <Button color="inherit" onClick={handleSignInSignOut}>
-        {!!authUser !== true ? "Sign-In" : "Sign-Out"}
+      <Button color="inherit" onClick={handleOpen}>
+        Sign-In
       </Button>
-      {showModal ? <Modal dismissModal={handleDismissModal} /> : null}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <ModalContent />
+      </Modal>
     </React.Fragment>
   );
 };
 
-export default withRouter(SignIn);
+export default SignIn;

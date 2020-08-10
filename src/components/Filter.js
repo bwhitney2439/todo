@@ -2,8 +2,8 @@ import React from "react";
 import { useAppState } from "../contexts";
 
 import "./Filter.css";
-const Filter = () => {
-  const { activeFilter, dispatchFilter, todos, clearTodos } = useAppState();
+const Filter = ({ todos }) => {
+  const { activeFilter, dispatchFilter, clearTodos } = useAppState();
 
   const activeTodoCount = todos.reduce((accum, todo) => {
     return todo.completed ? accum : accum + 1;
